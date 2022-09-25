@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<USUARIOS>
+  <USUARIO>
+    <ID>1</ID>
+    <NOMBRE>Sergio</NOMBRE>
+    <TELEFONO>4324245432</TELEFONO>
+    <EMAIL>sergio@hola.es</EMAIL>
+  </USUARIO>
+</USUARIOS>
