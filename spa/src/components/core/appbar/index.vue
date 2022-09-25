@@ -1,0 +1,81 @@
+<template>
+	<v-app-bar
+      color="deep-purple accent-4"
+      dense
+      dark
+    >
+      <v-toolbar-title>Vuetify</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-menu
+        left
+        bottom
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+          text
+            v-bind="attrs"
+            v-on="on"
+          >
+            Modules
+          </v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item
+            v-for="n in 5"
+            :key="n"
+            @click="() => {}"
+          >
+            <v-list-item-title>Option {{ n }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+      <v-btn text @click="logout">
+        Cerrar Sesión
+      </v-btn>
+    </v-app-bar>
+</template>
+
+<script>
+import { mapActions } from 'vuex'
+export default {
+
+  name: 'AppBar',
+
+  data () {
+    return {
+
+    }
+  },
+  methods: {
+    async logout () {
+      this.setOverlay(true)
+      try {
+        const resp = await this.$store.dispatch('logout')
+        console.log(resp)
+        this.$router.push({ name: 'auth-login' })
+        this.setOverlay(false)
+      } catch (error) {
+        this.setOverlay(false)
+        console.log(error)
+      }
+    },
+    async fetchUser () {
+      this.setOverlay(true)
+      try {
+        await this.$store.dispatch('fetchUser')
+        this.setOverlay(false)
+      } catch (error) {
+        this.setOverlay(false)
+        console.log(error)
+      }
+    },
+    ...mapActions({
+      setOverlay: 'setOverlay'
+    })
+  }
+}
+</script>
+
+<style lang="css" scoped>
+</style>
