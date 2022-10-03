@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Http\Request;
+
+use App\Http\Controllers\TicketsController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,3 +39,7 @@ Route::group(['prefix' => 'tickets'], function () {
     Route::get('ticket-list-admin', [TicketsController::class, 'listAdmin']);
     Route::get('ticket-show-admin/{id}',  [TicketsController::class, 'showAdmin']);
 });
+
+//Rutas para ordenes
+Route::get('/ordenes', [OrderController::class, 'index']);
+Route::post('/cambiarStatus', [OrderController::class, 'update']);
