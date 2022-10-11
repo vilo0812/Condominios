@@ -39,8 +39,7 @@ class TicketsController extends Controller
                 $ticke->send = $message->created_at->diffForHumans();
             }
         }
-        return view('tickets.componenteTickets.admin.list-admin')
-            ->with('ticket', $ticket);
+        return response()->json($ticket, 200);
     }
 
 
@@ -48,12 +47,11 @@ class TicketsController extends Controller
     public function showAdmin($id)
     {
         $ticket = Ticket::find($id);
-        $message = MessageTicket::all()->where('id_ticket', $id);
-        $email = User::find(1);
-        $admin = $email->email;
-        return view('tickets.componenteTickets.admin.show-admin')
-            ->with('ticket', $ticket)
-            ->with('message', $message)->with('admin', $admin);
+        //$message = MessageTicket::all()->where('id_ticket', $id);
+        //$email = User::find(1);
+        //$admin = $email->email;
+
+        return response()->json($ticket, 200);
     }
 
     // permite editar el ticket
@@ -61,14 +59,12 @@ class TicketsController extends Controller
     public function editAdmin($id)
     {
         $ticket = Ticket::find($id);
-        $message = MessageTicket::where('id_ticket', $id)->orderby('created_at', 'ASC')->get();
-        $email = User::all()->where('id');
+       // $message = MessageTicket::where('id_ticket', $id)->orderby('created_at', 'ASC')->get();
+        //$email = User::all()->where('id');
 
-        $admin = $email[0]->email;
-        return view('tickets.componenteTickets.admin.edit-admin')
-            ->with('ticket', $ticket)
-            ->with('message', $message)
-            ->with('admin', $admin);
+        //$admin = $email[0]->email;
+
+        return response()->json($ticket, 200);
     }
     // permite actualizar el ticket
 
@@ -90,26 +86,26 @@ class TicketsController extends Controller
             $destino = public_path('storage');
             $request->image->move($destino, $nombre);
 
-        MessageTicket::create([
+        /*MessageTicket::create([
             'user_id' => $ticket->user_id,
             'id_admin' => Auth::id(),
             'id_ticket' => $ticket->id,
             'type' => '1',
             'message' => request('message'),
             'image' => $nombre
-        ]);
+        ]);*/
     }else{
-        MessageTicket::create([
+       /* MessageTicket::create([
             'user_id' => $ticket->user_id,
             'id_admin' => Auth::id(),
             'id_ticket' => $ticket->id,
             'type' => '1',
             'message' => request('message'),
-        ]);
+        ]);*/
     }
 
 
-        return redirect()->route('ticket.list-admin')->with('success', 'El Ticket se actualizo Exitosamente');
+    return response()->json('ticket update succesfully', 201);
     }
 
 
@@ -174,9 +170,9 @@ class TicketsController extends Controller
     // permite ver la vista de creacion del ticket
     public function create()
     {
-        $email = User::find(1);
-        $admin = $email->email;
-        return view('tickets.create')->with('admin', $admin);
+       // $email = User::find(1);
+       // $admin = $email->email;
+        //return view('tickets.create')->with('admin', $admin);
     }
 
     // permite la creacion del ticket
@@ -206,7 +202,7 @@ class TicketsController extends Controller
             $request->image->move($destino, $nombre);
 
 
-            MessageTicket::create([
+           /* MessageTicket::create([
                 'user_id' => Auth::id(),
                 'id_admin' => '1',
                 'id_ticket' => $id_ticket,
@@ -214,31 +210,31 @@ class TicketsController extends Controller
                 'message' => request('message'),
                 'image' => $nombre
 
-            ]);
+            ]);*/
         } else {
-            MessageTicket::create([
+           /* MessageTicket::create([
                 'user_id' => Auth::id(),
                 'id_admin' => '1',
                 'id_ticket' => $id_ticket,
                 'type' => '0',
                 'message' => request('message'),
-            ]);
+            ]);*/
         }
 
-        return redirect()->route('ticket.list-user')->with('success', 'El Ticket se creo Exitosamente');
+        return response()->json('ticket created succesfully', 201);
     }
 
     // permite editar el ticket
     public function editUser($id)
     {
         $ticket = Ticket::find($id);
-        $message = MessageTicket::where('id_ticket', $id)->orderby('created_at', 'ASC')->get();
-        $imagenes = MessageTicket::all('image');
-        $email = User::all()->where('id');
-        $admin = $email[0]->email;
-        return view('tickets.componenteTickets.user.edit-user', compact('imagenes'))
-            ->with('ticket', $ticket)
-            ->with('message', $message)->with('admin', $admin);
+        //$message = MessageTicket::where('id_ticket', $id)->orderby('created_at', 'ASC')->get();
+        //$imagenes = MessageTicket::all('image');
+       // $email = User::all()->where('id');
+        //$admin = $email[0]->email;
+
+        return response()->json($ticket, 200);
+
     }
 
     // permite actualizar el ticket
@@ -260,27 +256,27 @@ class TicketsController extends Controller
             $request->image->move($destino, $nombre);
 
 
-            MessageTicket::create([
+            /*MessageTicket::create([
                 'user_id' => Auth::id(),
                 'id_admin' => '1',
                 'id_ticket' => $ticket->id,
                 'type' => '0',
                 'message' => request('message'),
                 'image' => $nombre
-            ]);
+            ]);*/
         } else {
-            MessageTicket::create([
+           /* MessageTicket::create([
                 'user_id' => Auth::id(),
                 'id_admin' => '1',
                 'id_ticket' => $ticket->id,
                 'type' => '0',
                 'message' => request('message'),
-            ]);
+            ]);*/
         }
 
         $ticket->save();
 
-        return redirect()->route('ticket.list-user')->with('success', 'el ticket se Actualizo Correctamente');
+        return response()->json('ticket update succesfully', 201);
     }
 
     // permite ver la lista de tickets
@@ -288,7 +284,7 @@ class TicketsController extends Controller
     {
 
         $ticket = Ticket::where('user_id', Auth::id())->get();
-        foreach ($ticket as $ticke) {
+       /* foreach ($ticket as $ticke) {
             $message = MessageTicket::where('id_ticket', '=', $ticke->id)
                 ->where('type', 1)
                 ->select('created_at')
@@ -298,21 +294,17 @@ class TicketsController extends Controller
             if ($message != null) {
                 $ticke->send = $message->created_at->diffForHumans();
             }
-        }
-        return view('tickets.componenteTickets.user.list-user')
-            ->with('ticket', $ticket);
+        }*/
+        return response()->json($ticket, 200);
     }
 
     // permite ver el ticket
     public function showUser($id)
     {
         $ticket = Ticket::find($id);
-        $message = MessageTicket::all()->where('id_ticket', $id);
+       /* $message = MessageTicket::all()->where('id_ticket', $id);
         $email = User::find(1);
-        $admin = $email->email;
-        return view('tickets.componenteTickets.user.show-user')
-            ->with('ticket', $ticket)
-            ->with('message', $message)
-            ->with('admin', $admin);
+        $admin = $email->email;*/
+        return response()->json($ticket, 200);
     }
 }

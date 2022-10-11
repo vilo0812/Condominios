@@ -54,7 +54,7 @@ class OrderController extends Controller
         $orden->type_wallet = $request->moneda;
         $orden->save();
 
-        return "200";
+        return response()->json('Orden created succesfully', 201);
     }
 
     /**
@@ -93,7 +93,7 @@ class OrderController extends Controller
             'status' => $request->status
         ]);
 
-        return "200";
+        return response()->json('orden updated succesfully', 201);
     }
 
     /**
