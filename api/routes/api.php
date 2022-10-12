@@ -19,4 +19,4 @@ Route::group(['prefix' => 'auth'], function ($router) {
 
 });
 
-Route::apiresource('users', 'Api\User\UserController');
+Route::apiresource('users', 'Api\User\UserController')->middleware('jwt.init');

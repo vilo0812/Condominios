@@ -31,20 +31,14 @@ class JwtInit
                 $response = $next($request);
                 $response->headers->set('Authorization', $newToken);
                 return $response;
-            }else if ($e instanceof TokenInvalidException) {
-                // token invalido
-                return response()->json(['mensaje' => 'token in valid'],$e->getStatusCode());
-
+            }else if ($e instanceof TokenInvalidException) {  // token invalido
+                return response()->json(['mensaje' => 'token no valido'],  401);
             }else if($e instanceof TokenBlacklistedException) {
-
-                return response()->json(['mensaje' => 'token black list'],$e->getStatusCode());
-
+                return response()->json(['mensaje' => 'token black list'], 401);
             }else{
-
-                return response()->json(['mensaje' => 'token no found'],$e->getStatusCode());
-
+                return response()->json(['mensaje' => 'token no found'],   401);
             }
-            return $next($request);
         }
+        return $next($request);
     }
 }
