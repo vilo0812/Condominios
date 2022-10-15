@@ -30,6 +30,15 @@ export default [
     name: 'auth-register',
     component: page('auth/Register.vue')
   },
+  /*users*/
+  {
+    path: '/Users',
+    name: 'Users',
+    components: { default: page('users'), header: comp('core/appbar') },
+    meta: {
+      auth: true
+    }
+  },
   /* Errors */
   {
     path: '*',

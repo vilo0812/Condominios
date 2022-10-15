@@ -3,6 +3,7 @@
 		<v-row
 		align="center"
 		justify="center"
+		class="pt-5"
 		>
 			<v-col
 			cols="12"
@@ -23,7 +24,7 @@
 				src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
 				></v-img>
 				<v-card-text>
-					inicio de la plantilla de vuetify
+					condominios para seguridad y bienestar
 				</v-card-text>
 				<v-card-actions>
 				<v-spacer />

@@ -19,7 +19,6 @@
     "@babel/core": "^7.12.16",
     "@babel/eslint-parser": "^7.12.16",
     "@vue/cli-plugin-babel": "^5.0.8",
-    "@vue/cli-plugin-eslint": "~5.0.0",
     "@vue/cli-service": "^5.0.8",
     "@vue/eslint-config-standard": "^6.1.0",
     "babel-eslint": "^10.1.0",
@@ -42,11 +41,17 @@
     "parserOptions": {
       "parser": "@babel/eslint-parser"
     },
-    "rules": {}
+    "rules": {
+      "no-unused-vars": "off"
+    }
   },
   "browserslist": [
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+  "preinstall": "npx npm-force-resolutions",
+  "resolutions": {
+    "glob-parent": "^6.0.1"
+  }
 }

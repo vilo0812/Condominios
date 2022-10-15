@@ -3,7 +3,7 @@
     <div class="body">
       <overlay/>
       <router-view name="header" />
-          <router-view />
+          <router-view class="pt-5"/>
       <router-view name="footer" />
     </div>
   </v-app>
