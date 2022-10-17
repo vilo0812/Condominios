@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 | API Routes
 |--------------------------------------------------------------------------
 */
-
+ 
 	// rutas de autenticazion
 Route::group(['prefix' => 'auth'], function ($router) {
 
