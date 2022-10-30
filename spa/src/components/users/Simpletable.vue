@@ -19,7 +19,7 @@
         </thead>
         <tbody>
           <tr
-            v-for="item in users.users"
+            v-for="item in users"
             :key="item.id"
           >
             <td>{{ item.name }}</td>

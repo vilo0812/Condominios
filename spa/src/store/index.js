@@ -8,7 +8,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-  	modal: true,
+  	modal: false,
     modalDelete: false
   },
   mutations: {

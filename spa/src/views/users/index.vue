@@ -27,10 +27,10 @@
           </v-card>
         </v-col>
       </v-row>
-      <!--   Modal Update Or Create Alcaldia -->
+      <!--   Modal Update Or Create User -->
       <UpdateOrCreate :action="action" :data="user" @close="close"/>
-      <!--   Modal Delete Alcaldia -->
-      <!-- <DeleteModal :data="departament" module-name="Departamento" action-delete-name="deleteDepartament"/> -->
+      <!--   Modal Delete User -->
+      <DeleteModal :data="user" module-name="Usuario" action-delete-name="deleteUser"/>
     </div>
   </template>
   
