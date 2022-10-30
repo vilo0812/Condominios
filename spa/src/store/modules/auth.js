@@ -26,13 +26,13 @@ export default {
       commit('SET_TOKEN', resp.data.access_token)
     },
     async logout ({ state }) {
-      const resp = await axios.post('/api/logout')
+      const resp = await axios.post('/api/auth/logout')
       state.user = null
       state.token = null
       return resp.data
     },
     async fetchUser ({ commit }) {
-      const resp = await axios.get('/api/me')
+      const resp = await axios.get('/api/auth/me')
       commit('SET_USER', resp.data)
     }
   }

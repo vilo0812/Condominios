@@ -42,17 +42,18 @@
             </v-form>
           </v-card-text>
           <v-card-actions>
-            <v-btn
+            <!-- <v-btn
               color="primary"
               type="submit"
               :to="{name: 'auth-register'}"
             >
               Registro
-            </v-btn>
+            </v-btn> -->
             <v-spacer />
             <v-btn
               color="primary"
               type="submit"
+              @click="login"
             >
               Iniciar
             </v-btn>
