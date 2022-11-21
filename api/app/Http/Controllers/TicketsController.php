@@ -26,8 +26,8 @@ class TicketsController extends Controller
 
     public function listAdmin()
     {
-        $ticket = Ticket::all();
-        foreach ($ticket as $ticke) {
+        $ticket = Ticket::OrderBy('id', 'asc')->get();
+       /* foreach ($ticket as $ticke) {
 
             $message = MessageTicket::where('id_ticket', '=', $ticke->id)
                 ->where('type', 0)
@@ -38,7 +38,7 @@ class TicketsController extends Controller
             if ($message != null) {
                 $ticke->send = $message->created_at->diffForHumans();
             }
-        }
+        }*/
         return response()->json($ticket, 200);
     }
 
