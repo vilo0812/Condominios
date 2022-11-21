@@ -4,7 +4,7 @@
       dense
       dark
     >
-      <v-toolbar-title>Vuetify</v-toolbar-title>
+      <v-toolbar-title>Condominios</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-menu
         left
@@ -16,17 +16,17 @@
             v-bind="attrs"
             v-on="on"
           >
-            Modules
+            Modulos
           </v-btn>
         </template>
 
         <v-list>
           <v-list-item
-            v-for="n in 5"
-            :key="n"
-            @click="() => {}"
+            v-for="o in OptionsAdmin"
+            :key="o.key"
+            :to="{ name: o.route}"
           >
-            <v-list-item-title>Option {{ n }}</v-list-item-title>
+            <v-list-item-title>{{ o.name }}</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -44,7 +44,13 @@ export default {
 
   data () {
     return {
-
+      OptionsAdmin:[
+        { key : "Usuarios", route: "Users", name : "Usuarios"}
+      ],
+      OptionsUser:[
+        "1",
+        "2"
+      ]
     }
   },
   methods: {

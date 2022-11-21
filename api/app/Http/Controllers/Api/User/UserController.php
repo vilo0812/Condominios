@@ -9,6 +9,7 @@ use App\Repository\User\UserRepository;
 use App\Repository\User\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -21,23 +22,53 @@ class UserController extends Controller
         $this->user = Auth::guard('api')->user();
     }
 
-    public function index()
-    {
-
+    public function index(Request $request)
+    {   
+        $data = $this->repository->getAllByRol( $request->get('rol'), $request->get('perPage'),  $request->get('order') );
         return response()->json(
-            new UserCollection($this->repository->getAll()),
+            [
+                'users'    =>  $data->items(),
+                'paginate' =>  [
+                    'current_page'=> $data->currentPage(),
+                    'totalPage'   => $data->total(),
+                    'last_page'   => $data->lastPage(),
+                    'perPage'     => $data->perPage()
+                ]
+            ],
             200
         );
     }
 
     public function store(Request $request)
-    {
+    {  
+        $rules = [
+            'name'      => 'required|max:255',
+            'email'     => 'required|email|unique:users',
+            'password'  => 'required',
+            'rol'       => 'required'
+        ];
 
-        $user = $this->repository->createOrUpdateFromRequest();
+        $messages = [
+            'name.required'     =>  'El nombre es requerido.',
+            'email.required'    =>  'El Email es requerido.',
+            'email.email'       =>  'Email invalido.',
+            'email.unique'       =>  'El email ya se encuentra registrado',
+            'password.required' =>  'La contraseña es requerida',
+            'name.max'          =>  'Muchos caracteres en el campo name.',
+            'rol.required'      =>  'El rol es requerido.'
+
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ( $validator->fails() ) {
+            return response()->json( $validator->errors(), 400 );
+        }
+   
         return response()->json(
             [
                 'message' => 'user registrada exitosamente',
-                'data' => new UserResource($user)
+                'data' => new UserResource( $this->repository->CreateUser($request) )
             ],
              200 // state HTTP
          );

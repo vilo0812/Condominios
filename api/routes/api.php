@@ -22,8 +22,9 @@ Route::group(['prefix' => 'auth'], function ($router) {
 
 });
 
-Route::apiresource('users', 'Api\User\UserController');
+Route::apiresource('users', 'Api\User\UserController')->middleware('jwt.init');
 
+Route::apiresource('condominio', 'Api\Condominio\CondominioController')->middleware('jwt.init');
 //Ruta de los Tickets
 Route::controller(TicketsController::class)->group(
     function($router) {
