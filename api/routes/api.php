@@ -20,6 +20,7 @@ Route::group(['prefix' => 'auth'], function ($router) {
 });
 
 Route::apiresource('users', 'Api\User\UserController')->middleware('jwt.init');
-
 Route::apiresource('condominio', 'Api\Condominio\CondominioController')->middleware('jwt.init');
+Route::apiresource('pago', 'Api\Pago\PagosController')->middleware('jwt.init');
+Route::post('pago/status_pago/generateFacura', 'Api\Pago\PagosController@statusPagos')->middleware('jwt.init');
 
