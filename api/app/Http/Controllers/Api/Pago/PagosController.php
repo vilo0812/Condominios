@@ -186,10 +186,13 @@ class PagosController extends Controller
         }
     
         if ( $request->status === 'aprovado' ) {
-    
-            $pdf = PDF::loadView( 'pdf.factura', [ 'pago' => $pago ] )->download()->getOriginalContent();
-            $nameFile = url('/')."/storage/facturas/$pago->condominio->user->id/$pago->condominio->id/$pago->id-factura.pdf";
-            if ( Storage::disk()->put("facturas/$pago->condominio->user->id/$pago->condominio->id/$pago->id-factura.pdf", $pdf ) ) {
+
+            $user_id = $pago->condominio->user->id;
+            $condominio_id = $pago->condominio->id;
+            $pdf = PDF::loadView( 'pdf.factura', [ 'pago' => $pago ] );
+            $nameFile = url('/')."/storage/facturas/$user_id/$condominio_id/$pago->id-factura.pdf";
+            
+            if ( Storage::disk()->put("public/facturas/$user_id/$condominio_id/$pago->id-factura.pdf", $pdf->output() ) ) {
                 $factura = Factura::create([
                     'pago_id'   => $pago->id,
                     'reference' => $nameFile,
