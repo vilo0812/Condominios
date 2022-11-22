@@ -3,9 +3,9 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Ticket;
+use App\Models\Support;
 
-class TicketSeeder extends Seeder
+class SupportSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,7 +14,7 @@ class TicketSeeder extends Seeder
      */
     public function run()
     {
-        Ticket::create([
+        Support::create([
             'user_id'   => 1,
             'name'     => 'prueba',
             'email'    => 'administrador@test.com',
@@ -24,7 +24,7 @@ class TicketSeeder extends Seeder
             'issue' => 'prueba'
         ]);
 
-        Ticket::create([
+        Support::create([
             'user_id'   => 2,
             'name'     => 'prueba',
             'email'    => 'User@test.com',

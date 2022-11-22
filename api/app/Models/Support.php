@@ -5,11 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Ticket extends Model
+class Support extends Model
 {
-    protected $table = 'tickets';
-
-    public $timestamps = true;
+    use HasFactory;
 
     protected $fillable = [
         'user_id', 'status', 'priority', 'issue', 'created_at', 'name','email','categories'

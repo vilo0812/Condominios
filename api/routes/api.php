@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Controllers\TicketsController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\Api\Support\SupportController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,26 +22,22 @@ Route::group(['prefix' => 'auth'], function ($router) {
 	Route::post('me', 'Api\Auth\AuthController@me');
 
 });
+//Rutas ticket
+Route::get('ticket-create',[SupportController::class,'create']);
+Route::post('ticket-store',[SupportController::class,'store']);
+//Rutas ticket admin
+Route::get('ticket-list-admin',[SupportController::class,'listAdmin']);
+Route::post('ticket-update-admin',[SupportController::class,'updateAdmin']);
+Route::get('ticket-show-admin/{id}',[SupportController::class,'showAdmin']);
+//Rutas ticket user
+Route::post('ticket-update-user',[SupportController::class,'updateUser']);
+Route::get('ticket-list-user',[SupportController::class, 'listUser']);
+Route::get('ticket-show-user/{id}',[SupportController::class,'showUser']);
+
 
 Route::apiresource('users', 'Api\User\UserController')->middleware('jwt.init');
 
 Route::apiresource('condominio', 'Api\Condominio\CondominioController')->middleware('jwt.init');
-//Ruta de los Tickets
-Route::controller(TicketsController::class)->group(
-    function($router) {
-        Route::get('ticket-create','create');
-        Route::post('ticket-store','store');
-        // Para el usuario
-        Route::get('ticket-edit-user/{id}','editUser');
-        Route::patch('ticket-update-user/{id}','updateUser');
-        Route::get('ticket-list-user', 'listUser');
-        Route::get('ticket-show-user/{id}','showUser');
-        // Para el Admin
-        Route::get('ticket-edit-admin/{id}','editAdmin');
-        Route::patch('ticket-update-admin/{id}','updateAdmin');
-        Route::get('ticket-list-admin','listAdmin');
-        Route::get('ticket-show-admin/{id}','showAdmin');
-});
 
 
 //Rutas para ordenes
