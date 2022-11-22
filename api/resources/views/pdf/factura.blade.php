@@ -138,6 +138,7 @@
                 </div>
         </div>
         <h1 class="header-title">
+            <br>
             Factura de cliente: {{$pago->condominio->user->name}}<br/>
             <br/>
         </h1>
