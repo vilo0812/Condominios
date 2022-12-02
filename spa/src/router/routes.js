@@ -39,6 +39,33 @@ export default [
       auth: true
     }
   },
+  /*condominios*/
+  {
+    path: '/Urbanización',
+    name: 'Condominios',
+    components: { default: page('condominios'), header: comp('core/appbar') },
+    meta: {
+      auth: true
+    }
+  },
+  /*pagos*/
+  {
+    path: '/Pagos',
+    name: 'Pagos',
+    components: { default: page('pagos'), header: comp('core/appbar') },
+    meta: {
+      auth: true
+    }
+  },
+  /*tickets*/
+  {
+    path: '/Tickets',
+    name: 'Tickets',
+    components: { default: page('tickets'), header: comp('core/appbar') },
+    meta: {
+      auth: true
+    }
+  },
   /* Errors */
   {
     path: '*',

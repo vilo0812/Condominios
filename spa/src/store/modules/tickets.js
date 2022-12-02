@@ -6,8 +6,8 @@ export default {
   },
   mutations: {
     SET_TICKETS (state, data) {
-        state.tickets = data.users
-        state.ticketsPagitane = data.paginate
+        state.tickets = data
+        // state.ticketsPagitane = data.paginate
     },
     async SET_NEW_TICKET(state, ticket) {
       state.users.push(ticket)
@@ -17,9 +17,9 @@ export default {
       state.tickets[index].name = name
       state.tickets[index].user_id = user_id
       state.tickets[index].email = email
-      state.tickets[index].password = password
       state.tickets[index].categories = categories
       state.tickets[index].priority = priority
+      state.tickets[index].issue = issue
       state.tickets[index].status = status
     },
     SPLICE_TICKET_DELETED(state, id) {
@@ -31,24 +31,41 @@ export default {
     tickets: state => state.tickets,
   },
   actions: {
-    async getTickets({ commit }) {
+    async getTicketsAdmin({ commit }) {
       const resp = (
-        //TODO agregar
-        await axios.get(`/api/users?page=1&rol=2&perPage=100&order=desc`)
+        await axios.get(`/api/ticket-list-admin`)
         ).data
         commit('SET_TICKETS', resp)
         return resp
     },
-    async updateOrCreateTickets({ commit }, { ticket, id }) {
+    async getTicketsUser({ commit }) {
+      const resp = (
+        await axios.get(`/api/ticket-list-user`)
+        ).data
+        commit('SET_TICKETS', resp)
+        return resp
+    },
+    async updateOrCreateTicketsAdmin({ commit }, { ticket, id }) {
       if (!id) {
-        user.rol = 2;
-        //TODO agregar
-        const resp = (await axios.post('/api/users',ticket)).data
+        const resp = (await axios.post('ticket-store',ticket)).data
         commit('SET_NEW_TICKET', resp.data)
         return resp
       } else {
-        //TODO debemos agregar
-        const resp = (await axios.put(`/api/users/${id}`,ticket))
+        console.log(ticket)
+        const resp = (await axios.post(`ticket-update-admin`,ticket))
+          .data
+        commit('UPDATE_TICKET', resp.data)
+        return resp
+      }
+
+    },
+    async updateOrCreateTicketsUser({ commit }, { ticket, id }) {
+      if (!id) {
+        const resp = (await axios.post('ticket-store',ticket)).data
+        commit('SET_NEW_TICKET', resp.data)
+        return resp
+      } else {
+        const resp = (await axios.post(`ticket-update-user`,ticket))
           .data
         commit('UPDATE_TICKET', resp.data)
         return resp
@@ -57,7 +74,7 @@ export default {
     },
     async deleteTicket({ commit }, id) {
       //TODO debemos agregar
-      const resp = (await axios.delete(`/api/users/${id}`)).data
+      const resp = (await axios.delete(`/api/tickets/${id}`)).data
       commit('SPLICE_TICKET_DELETED', id)
       return resp
     }

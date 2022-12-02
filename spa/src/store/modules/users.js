@@ -44,7 +44,6 @@ export default {
         return resp
       } else {
         //TODO debemos probar porque no se mete en el array
-        user.password = 1234;
         const resp = (await axios.put(`/api/users/${id}`,user))
           .data
         commit('UPDATE_USER', resp.data)

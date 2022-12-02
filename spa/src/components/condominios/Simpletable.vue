@@ -3,28 +3,44 @@
       <template v-slot:default>
         <thead>
           <tr>
-            <th class="text-left w-50">
+            <th class="text-left">
               Nombre
             </th>
-            <th class="text-left w-50">
-              Correo
+            <th class="text-left">
+              Monto
             </th>
-            <th class="text-right">
+            <th class="text-left">
+              cuotas
+            </th>
+            <th class="text-left">
+              estatus
+            </th>
+            <th class="text-left">
+              Descripción
+            </th>
+            <th class="text-left">
+              dirección
+            </th>
+            <th class="text-rigth">
               Editar
             </th>
-            <th class="text-right">
+            <!-- <th class="text-rigth">
               Eliminar
-            </th>
+            </th> -->
           </tr>
         </thead>
         <tbody>
           <tr
-            v-for="item in users"
+            v-for="item in condominios"
             :key="item.id"
           >
             <td>{{ item.name }}</td>
-            <td>{{ item.email }}</td>
-            <td class="text-right"> 
+            <td>{{ item.amount }}</td>
+            <td>{{ item.dues }}</td>
+            <td>{{ item.status }}</td>
+            <td>{{ item.description }}</td>
+            <td>{{ item.location }}</td>
+            <td class="text-left"> 
                 <v-btn
                   depressed
                   color="warning"
@@ -33,7 +49,7 @@
                   Editar
                 </v-btn>
             </td>
-            <td class="text-right"> 
+            <!-- <td class="text-left">
                 <v-btn
                   depressed
                   color="error"
@@ -41,7 +57,7 @@
                 >
                   Eliminar
                 </v-btn>
-            </td>
+            </td> -->
           </tr>
         </tbody>
       </template>
@@ -57,26 +73,26 @@
     }),
     computed: {
       ...mapGetters({
-        users: 'users',
+        condominios: 'condominios',
       }),
     },
     methods:{
       ...mapActions({
-        getUsers: 'getUsers',
+        getCondominios: 'getCondominios',
         setOverlay: 'setOverlay'
       }),
-      editing: function(user) {
-        this.$emit("editing",user);
+      editing: function(pago) {
+        this.$emit("editing",pago);
       },
-      deleting: function(user) {
-        this.$emit("deleting",user);
+      deleting: function(pago) {
+        this.$emit("deleting",pago);
       }
     },
     async created() {
       this.setOverlay(true)
       try {
-      if(this.users.length <= 0){
-        await this.getUsers()
+      if(this.condominios.length <= 0){
+        await this.getCondominios()
       }
       this.setOverlay(false)
       } catch (error) {

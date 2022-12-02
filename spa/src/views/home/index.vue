@@ -21,7 +21,7 @@
 				</v-toolbar>
 				<v-img
 				height="300"
-				src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
+				src="@/assets/img/condominio2.jpg"
 				></v-img>
 				<v-card-text>
 					condominios para seguridad y bienestar

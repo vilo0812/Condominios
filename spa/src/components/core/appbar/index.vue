@@ -4,7 +4,7 @@
       dense
       dark
     >
-      <v-toolbar-title>Condominios</v-toolbar-title>
+      <v-toolbar-title>Urb. Romulo Gallegos</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-menu
         left
@@ -45,7 +45,10 @@ export default {
   data () {
     return {
       OptionsAdmin:[
-        { key : "Usuarios", route: "Users", name : "Usuarios"}
+        { key : "Usuarios", route: "Users", name : "Usuarios"},
+        { key : "Tickets", route: "Tickets", name : "Tickets"},
+        { key : "Condominios", route: "Condominios", name : "Urbanización"},
+        { key : "Pagos", route: "Pagos", name : "Pagos"}
       ],
       OptionsUser:[
         "1",
