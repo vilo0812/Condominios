@@ -7,17 +7,17 @@
               Usuario
             </th>
             <th class="text-left">
-              Ticket
+              Tema
             </th>
             <th class="text-left">
               Categoria
             </th>
-            <th class="text-left">
+            <!-- <th class="text-left">
               Prioridad
-            </th>
-            <th class="text-left">
+            </th> -->
+            <!-- <th class="text-left">
               Tema
-            </th>
+            </th> -->
             <th class="text-rigth">
               Editar
             </th>
@@ -34,8 +34,8 @@
             <td>{{ getUser(item.user_id) }}</td>
             <td>{{ item.name }}</td>
             <td>{{ getCategories(item.categories) }}</td>
-            <td>{{ item.priority }}</td>
-            <td>{{ item.issue }}</td>
+            <!-- <td>{{ item.priority }}</td> -->
+            <!-- <td>{{ item.issue }}</td> -->
             <td class="text-left"> 
                 <v-btn
                   depressed
@@ -67,12 +67,12 @@
     name: 'Simpletable',
     data: () => ({
       categorias : [
-        {id: 0,name:"Ayuda"},
-        {id: 1,name:"Soporte técnico"},
-        {id: 2,name:"Retraso de pago"},
-        {id: 3,name:"Corrección de datos"},
-        {id: 4,name:"Bono"},
-        {id: 5,name:"inversion total"}
+        {id: 1,name:"Servicio de Gas"},
+        {id: 2,name:"Servicio de Electricidad"},
+        {id: 3,name:"Servicio de Seguridad"},
+        {id: 4,name:"Evento"},
+        {id: 5,name:"Donacion"},
+        {id: 6,name:"Servicio de Agua"}
       ],
     }),
     computed: {

@@ -8,7 +8,7 @@
         cols="12"
         sm="9"
         >
-          <v-card 
+          <v-card
             class="elevation-2"
             color="deep-purple accent-4"
           >
@@ -33,7 +33,7 @@
       <DeleteModal :data="ticket" module-name="Ticket" action-delete-name="deleteTicket"/>
     </div>
   </template>
-  
+
   <script>
     import Simpletable from '@/components/tickets/Simpletable.vue'
     import UpdateOrCreate from '@/components/tickets/UpdateOrCreate.vue'

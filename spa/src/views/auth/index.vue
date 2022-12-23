@@ -20,7 +20,7 @@
           </v-toolbar>
           <v-img
             height="300"
-            src="@/assets/img/condominio.jpg"
+            src="@/assets/img/urb.png"
           ></v-img>
           <v-card-text>
             <v-form @submit="login">

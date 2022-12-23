@@ -47,25 +47,24 @@ export default {
     },
     async updateOrCreateTicketsAdmin({ commit }, { ticket, id }) {
       if (!id) {
-        const resp = (await axios.post('ticket-store',ticket)).data
+        const resp = (await axios.post('api/ticket-store',ticket)).data
         commit('SET_NEW_TICKET', resp.data)
         return resp
       } else {
         console.log(ticket)
-        const resp = (await axios.post(`ticket-update-admin`,ticket))
+        const resp = (await axios.post(`api/ticket-update-admin`,ticket))
           .data
         commit('UPDATE_TICKET', resp.data)
         return resp
       }
-
     },
     async updateOrCreateTicketsUser({ commit }, { ticket, id }) {
       if (!id) {
-        const resp = (await axios.post('ticket-store',ticket)).data
+        const resp = (await axios.post('api/ticket-store',ticket)).data
         commit('SET_NEW_TICKET', resp.data)
         return resp
       } else {
-        const resp = (await axios.post(`ticket-update-user`,ticket))
+        const resp = (await axios.post(`api/ticket-update-user`,ticket))
           .data
         commit('UPDATE_TICKET', resp.data)
         return resp

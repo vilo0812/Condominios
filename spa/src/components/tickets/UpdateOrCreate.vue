@@ -18,7 +18,7 @@
               required
               :value="getName"
             ></v-text-field>
-            <v-select
+            <!-- <v-select
               :items="users"
               label="Usuario"
               item-text="name"
@@ -26,8 +26,8 @@
               :rules="user_idRules"
               :value="getUser_id"
               v-model="user_id"
-            ></v-select>
-            <v-text-field
+            ></v-select> -->
+            <!-- <v-text-field
               v-model="issue"
               :counter="30"
               :rules="temaRules"
@@ -42,7 +42,7 @@
               label="Prioridad"
               required
               :value="getPriority"
-            ></v-text-field>
+            ></v-text-field> -->
             <v-select
               :items="categorias"
               label="Categtoria"
@@ -69,6 +69,7 @@ export default {
   computed: {
     ...mapGetters({
         users:'users',
+        user:'user',
         isAdmin: 'isAdmin'
       }),
       changePassword() {
@@ -101,17 +102,17 @@ export default {
       valid: true,
       user_id : '',
       name : '',
-      categories : '',
+      categories : 0,
       priority : '',
       issue : '',
       ticket_id : '',
       categorias : [
-        {id: 0,name:"Ayuda"},
-        {id: 1,name:"Soporte técnico"},
-        {id: 2,name:"Retraso de pago"},
-        {id: 3,name:"Corrección de datos"},
-        {id: 4,name:"Bono"},
-        {id: 5,name:"inversion total"}
+        {id: 1,name:"Servicio de Gas"},
+        {id: 2,name:"Servicio de Electricidad"},
+        {id: 3,name:"Servicio de Seguridad"},
+        {id: 4,name:"Evento"},
+        {id: 5,name:"Donacion"},
+        {id: 6,name:"Servicio de Agua"}
       ],
       nameRules: [
         v => !!v || 'Nombre es requerido',
@@ -152,7 +153,7 @@ export default {
     changeModalState() {
       this.user_id = ''
       this.name = ''
-      this.categories = ''
+      this.categories = 0
       this.priority = ''
       this.issue = ''
       this.$emit('close')
@@ -163,14 +164,17 @@ export default {
       const id = this.data != null ? this.data.id : ''
       let userId = String.valueOf(this.user_id)
       const ticket = {
-        user_id : userId,
+        user_id : this.user.id,
         name : this.name,
-        categorie : String.valueOf(this.categories),
-        priority : String.valueOf(this.priority),
-        issue : String.valueOf(this.issue),
+        email : this.user.email,
+        categories : this.categories,
+        priority : 1,
+        issue : this.name,
         ticket_id : String.valueOf(id),
-        status : "0"
+        status : "0",
+        description : this.name
       }
+      console.log(ticket)
       try {
         if(this.isAdmin){
           const resp = await this.updateOrCreateTicketsAdmin({ ticket,  id })

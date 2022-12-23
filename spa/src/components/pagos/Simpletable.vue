@@ -31,21 +31,12 @@
             <td class="text-left">
                 <v-btn
                   depressed
-                  color="info"
+                  color="info" 
                   @click="seeing(item)"
                 >
                   ver
                 </v-btn>
             </td>
-            <!-- <td class="text-right">
-                <v-btn
-                  depressed
-                  color="warning"
-                  @click="editing(item)"
-                >
-                  Editar
-                </v-btn>
-            </td> -->
             <td class="text-left">
                 <v-btn
                   depressed

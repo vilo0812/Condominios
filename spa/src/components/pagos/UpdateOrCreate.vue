@@ -28,14 +28,6 @@
               :value="getCondominio"
               v-model="condominio_id"
             ></v-select>
-            <!-- <v-text-field
-              v-model="status"
-              :counter="60"
-              :rules="statusRules"
-              label="Estatus"
-              required
-              :value="getStatus"
-            ></v-text-field> -->
             <v-file-input
               accept="image/png, image/jpeg"
               label="Cargar pago"
