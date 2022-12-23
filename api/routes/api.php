@@ -23,7 +23,9 @@ Route::group(['prefix' => 'auth'], function ($router) {
 
 });
 //Rutas ticket
-Route::get('ticket-create',[SupportController::class,'create']);
+
+
+Route::delete('ticket-delete/{id}',[SupportController::class,'delete']);
 Route::post('ticket-store',[SupportController::class,'store']);
 //Rutas ticket admin
 Route::get('ticket-list-admin',[SupportController::class,'listAdmin']);
@@ -33,6 +35,7 @@ Route::get('ticket-show-admin/{id}',[SupportController::class,'showAdmin']);
 Route::post('ticket-update-user',[SupportController::class,'updateUser']);
 Route::get('ticket-list-user',[SupportController::class, 'listUser']);
 Route::get('ticket-show-user/{id}',[SupportController::class,'showUser']);
+
 
 
 Route::apiresource('users', 'Api\User\UserController')->middleware('jwt.init');

@@ -99,50 +99,51 @@ class SupportController extends Controller
     // permite la creacion del ticket
     public function store(Request $request)
     {
-        Support::create([
-            'user_id' => Auth::id(),
-            'issue' => request('issue'),
-            'categories' => request('categories'),
-            'priority' => request('priority')
-        ]);
+        $rules = [
+            'name'          => 'required',
+            'email'         => 'required',
+            'categories'     => 'required',
+            'priority'      => 'required',
+            'user_id'       => 'required|int',
+            'issue'         => 'required',
+            'status'        => 'required',
+        ];
 
-        $ticket_create = Support::where('user_id', Auth::id())->orderby('created_at', 'DESC')->take(1)->get();
-        $id_ticket = $ticket_create[0]->id;
+        $messages = [
+            'name.required'        => 'El campo es requerido.',
+            'user_id.required'     => 'El campo debe ser int.',
+            'user_id.int'          => 'El campo debe ser int.',
+            'issue.required' => 'El campo es requerido.',
+            'status.required'      => 'El campo es requerido.',
+            'priority.required'    => 'El campo es requerido.',
+            'email.required'    => 'El campo es requerido.',
+            'categories.required'    => 'El campo es requerido.',
 
+        ];
 
-        $validate = $request->validate([
-            'image' => 'image|max:2048',
-            'message' => 'min:2'
+        $validator = Validator::make($request->all(), $rules, $messages);
 
-        ]);
-
-        if ($validate && $request->hasFile('image')) {
-            $imagen = $request->file('image');
-            $nombre = time() . '.' . $imagen->getClientOriginalName();
-            $destino = public_path('storage');
-            $request->image->move($destino, $nombre);
-
-
-           /* MessageTicket::create([
-                'user_id' => Auth::id(),
-                'id_admin' => '1',
-                'id_ticket' => $id_ticket,
-                'type' => '0',
-                'message' => request('message'),
-                'image' => $nombre
-
-            ]);*/
-        } else {
-           /* MessageTicket::create([
-                'user_id' => Auth::id(),
-                'id_admin' => '1',
-                'id_ticket' => $id_ticket,
-                'type' => '0',
-                'message' => request('message'),
-            ]);*/
+        if ( $validator->fails() ) {
+            return response()->json( $validator->errors(), 400 );
         }
 
-        return response()->json('ticket created succesfully', 201);
+        $ticket = $this->model->create([
+            'user_id'    => $request->user_id,
+            'name'       => $request->name,
+            'issue'      => $request->issue,
+            'priority'   => $request->priority,
+            'status'     => $request->status,
+            'email'      => $request->email,
+            'categories' => $request->categories,
+        ]);
+
+        return response()->json(
+            [
+                'message'   => 'ticket registrado exitosamente',
+                'data'      => $ticket
+            ],
+             200 // state HTTP
+         );
     }
 
 
@@ -193,5 +194,23 @@ class SupportController extends Controller
         $email = User::find(1);
         $admin = $email->email;*/
         return response()->json($ticket, 200);
+    }
+
+    public function delete(int $id)
+    {
+        $ticket = $this->model->find($id);
+        if ( is_null($ticket) ) {
+            return response()->json( [ 'message'   => 'no se encontro datos.' ], 404 );
+        }
+
+        $ticket->delete();
+
+        return response()->json(
+            [
+                'message' => 'ticket eliminado'
+            ],
+            200
+        );
+
     }
 }
