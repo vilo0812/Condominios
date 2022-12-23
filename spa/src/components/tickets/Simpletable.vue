@@ -18,12 +18,22 @@
             <!-- <th class="text-left">
               Tema
             </th> -->
-            <th class="text-rigth">
-              Editar
-            </th>
-            <th class="text-rigth">
-              Eliminar
-            </th>
+            <template v-if="isAdmin">
+              <th class="text-rigth">
+              Pagados
+              </th>
+              <th class="text-rigth">
+                Editar
+              </th>
+              <th class="text-rigth">
+                Eliminar
+              </th>
+            </template>
+            <template v-else>
+              <th class="text-rigth">
+              Pagos
+              </th>
+            </template>
           </tr>
         </thead>
         <tbody>
@@ -36,7 +46,16 @@
             <td>{{ getCategories(item.categories) }}</td>
             <!-- <td>{{ item.priority }}</td> -->
             <!-- <td>{{ item.issue }}</td> -->
-            <td class="text-left"> 
+            <template v-if="isAdmin">
+            <td class="text-left" >
+              <v-btn
+                  depressed
+                  color="info"
+                >
+                  Pagados
+                </v-btn>
+            </td>
+            <td class="text-left">
                 <v-btn
                   depressed
                   color="warning"
@@ -45,7 +64,7 @@
                   Editar
                 </v-btn>
             </td>
-            <td class="text-left"> 
+            <td class="text-left">
                 <v-btn
                   depressed
                   color="error"
@@ -54,6 +73,17 @@
                   Eliminar
                 </v-btn>
             </td>
+          </template>
+        <template v-else>
+          <td class="text-left" >
+              <v-btn
+                  depressed
+                  color="info"
+                >
+                  Pagar
+                </v-btn>
+            </td>
+        </template>
           </tr>
         </tbody>
       </template>
@@ -124,11 +154,8 @@
         if(this.isAdmin){
           await this.getTicketsAdmin()
         }else{
-          await this.getTicketsUser()
+          await this.getTicketsAdmin()
         }
-        // if(this.tickets.length <= 0){
-        //   await this.getTicketsAdmin()
-        // }
       this.setOverlay(false)
       } catch (error) {
         console.log(error)

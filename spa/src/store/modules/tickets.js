@@ -10,10 +10,10 @@ export default {
         // state.ticketsPagitane = data.paginate
     },
     async SET_NEW_TICKET(state, ticket) {
-      state.users.push(ticket)
+      state.tickets.push(ticket)
     },
-    UPDATE_TICKET(state, { id, user_id,name, email, categories,priority,status }) {
-      let index = state.users.findIndex((o) => o.id === id)
+    UPDATE_TICKET(state, { id, user_id,name, email, categories,priority,status,issue }) {
+      let index = state.tickets.findIndex((o) => o.id === id)
       state.tickets[index].name = name
       state.tickets[index].user_id = user_id
       state.tickets[index].email = email
@@ -51,7 +51,6 @@ export default {
         commit('SET_NEW_TICKET', resp.data)
         return resp
       } else {
-        console.log(ticket)
         const resp = (await axios.post(`api/ticket-update-admin`,ticket))
           .data
         commit('UPDATE_TICKET', resp.data)
@@ -73,7 +72,7 @@ export default {
     },
     async deleteTicket({ commit }, id) {
       //TODO debemos agregar
-      const resp = (await axios.delete(`/api/tickets/${id}`)).data
+      const resp = (await axios.delete(`/api/ticket-delete/${id}`)).data
       commit('SPLICE_TICKET_DELETED', id)
       return resp
     }

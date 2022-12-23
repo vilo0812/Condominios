@@ -19,8 +19,8 @@
             Modulos
           </v-btn>
         </template>
-
-        <v-list>
+        <template v-if="isAdmin">
+          <v-list >
           <v-list-item
             v-for="o in OptionsAdmin"
             :key="o.key"
@@ -29,6 +29,18 @@
             <v-list-item-title>{{ o.name }}</v-list-item-title>
           </v-list-item>
         </v-list>
+        </template>
+        <template v-else>
+          <v-list >
+          <v-list-item
+            v-for="o in OptionsUser"
+            :key="o.key"
+            :to="{ name: o.route}"
+          >
+            <v-list-item-title>{{ o.name }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+        </template>
       </v-menu>
       <v-btn text @click="logout">
         Cerrar Sesión
@@ -37,7 +49,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions,mapGetters } from 'vuex'
 export default {
 
   name: 'AppBar',
@@ -46,15 +58,19 @@ export default {
     return {
       OptionsAdmin:[
         { key : "Usuarios", route: "Users", name : "Usuarios"},
-        { key : "Tickets", route: "Tickets", name : "Tickets"},
+        { key : "Tickets", route: "Tickets", name : "Cartelera"},
         { key : "Condominios", route: "Condominios", name : "Urbanización"},
         { key : "Pagos", route: "Pagos", name : "Pagos"}
       ],
       OptionsUser:[
-        "1",
-        "2"
+        { key : "Tickets", route: "Tickets", name : "Cartelera"}
       ]
     }
+  },
+  computed: {
+    ...mapGetters({
+      isAdmin: 'isAdmin'
+    }),
   },
   methods: {
     async logout () {

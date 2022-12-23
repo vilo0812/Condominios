@@ -13,14 +13,14 @@
             color="deep-purple accent-4"
           >
             <v-card-title>
-              Tickets
+              Cartelera
               <v-spacer />
               <v-btn
                 color="primary"
                 large
               @click="changeModalState(true, 'Crear')"
               >
-                Agregar Ticket
+                Agregar Anuncio
               </v-btn>
             </v-card-title>
             <Simpletable  @editing="editing" @deleting="deleting"/>
@@ -30,7 +30,7 @@
       <!--   Modal Update Or Create User -->
       <UpdateOrCreate :action="action" :data="ticket" @close="close"/>
       <!--   Modal Delete User -->
-      <DeleteModal :data="ticket" module-name="Ticket" action-delete-name="deleteTicket"/>
+      <DeleteModal :data="ticket" module-name="Anuncio" action-delete-name="deleteTicket"/>
     </div>
   </template>
 

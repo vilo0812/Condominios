@@ -1,7 +1,7 @@
 <template>
 	<Modal>
         <template slot="header">
-          <h4>{{action}} Ticket</h4>
+          <h4>{{action}} Anuncio</h4>
         </template>
   
         <template slot="body">
@@ -14,7 +14,7 @@
               v-model="name"
               :counter="30"
               :rules="nameRules"
-              label="Nombre"
+              label="Tema"
               required
               :value="getName"
             ></v-text-field>
@@ -116,7 +116,7 @@ export default {
       ],
       nameRules: [
         v => !!v || 'Nombre es requerido',
-        v => (v && v.length <= 30) || 'deben ser menos de 30 caracteres',
+        v => (v && v.length <= 100) || 'deben ser menos de 30 caracteres',
       ],
       emailRules: [
         v => !!v || 'Correo es requerido',
@@ -170,11 +170,9 @@ export default {
         categories : this.categories,
         priority : 1,
         issue : this.name,
-        ticket_id : String.valueOf(id),
-        status : "0",
-        description : this.name
+        ticket_id : id,
+        status : "0"
       }
-      console.log(ticket)
       try {
         if(this.isAdmin){
           const resp = await this.updateOrCreateTicketsAdmin({ ticket,  id })
