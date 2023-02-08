@@ -9,6 +9,12 @@
             <th class="text-left w-50">
               Correo
             </th>
+            <th class="text-left w-50">
+              Teléfono
+            </th>
+            <th class="text-left w-50">
+              Apartamento
+            </th>
             <th class="text-right">
               Editar
             </th>
@@ -24,6 +30,8 @@
           >
             <td>{{ item.name }}</td>
             <td>{{ item.email }}</td>
+            <td>{{ item.phone }}</td>
+            <td>{{ item.direction }}</td>
             <td class="text-right"> 
                 <v-btn
                   depressed

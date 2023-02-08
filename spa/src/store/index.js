@@ -13,11 +13,15 @@ export default new Vuex.Store({
   state: {
   	modal: false,
     modalDelete: false,
-    modalImage: false
+    modalImage: false,
+    modalCreatePagoTicket: false
   },
   mutations: {
   	CHANGE_MODAL_STATE(state, stateModal) {
       state.modal = stateModal
+    },
+    CHANGE_MODAL_CREATE_PAGO_TICKET_STATE(state, stateModal) {
+      state.modalCreatePagoTicket = stateModal
     },
     CHANGE_MODAL_DELETE_STATE(state, stateModal) {
       state.modalDelete = stateModal
@@ -30,7 +34,8 @@ export default new Vuex.Store({
   getters: {
   	modalState: (state) => state.modal,
   	modalImageState: (state) => state.modalImage,
-    modalDeleteState: (state) => state.modalDelete
+    modalDeleteState: (state) => state.modalDelete,
+    modalCreatePagoTicketState: (state) => state.modalCreatePagoTicket
   },
   modules: {
   	config,

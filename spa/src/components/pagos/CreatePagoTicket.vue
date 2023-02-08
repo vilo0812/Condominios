@@ -19,7 +19,7 @@
               required
               :value="getAmount"
             ></v-text-field>
-            <v-select
+            <!-- <v-select
               :items="condominios"
               label="Condominio"
               item-text="name"
@@ -27,7 +27,14 @@
               :rules="condominioRules"
               :value="getCondominio"
               v-model="condominio_id"
-            ></v-select>
+            ></v-select> -->
+            <v-text-field
+              :counter="30"
+              v-model="fecha_pago"
+              label="Fecha de Pago"
+              required
+              type="datetime-local"
+            ></v-text-field>
             <v-file-input
               accept="image/png, image/jpeg"
               label="Cargar pago"
@@ -43,22 +50,24 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import Modal from '@/components/base/modals'
+import Modal from '@/components/base/modals/CreatePagoTicketModal'
 export default {
   name: 'UpdateOrCreate',
   computed: {
     ...mapGetters({
-      condominios:'condominios'
+      condominios:'condominios',
+      pagos: 'pagos',
+      user:'user'
       }),
       getAmount() {
         return this.amount = this.data != null ? this.data.amount : ''
       },
       getStatus() {
         return this.status = this.data != null ? this.data.status : ''
-      },
-      getCondominio() {
-        return this.condominio_id = this.data != null ? this.data.condominios : ''
       }
+    //   getCondominio() {
+    //     return this.condominio_id = this.data != null ? this.data.condominios : ''
+    //   }
   },
 	components: {
       Modal
@@ -67,7 +76,7 @@ export default {
     return {
       valid: true,
       amount: '',
-      status: '',
+      status: 'activo',
       reference: '',
       condominio_id: '',
       name: '',
@@ -79,10 +88,10 @@ export default {
       statusRules: [
         v => !!v || 'Estatus es requerido',
         v => (v && v.length <= 30) || 'deben ser menos de 30 caracteres',
-      ],
-      condominioRules: [
-        v => !!v || 'Condominio es requerido',
-      ],
+      ]
+    //   condominioRules: [
+    //     v => !!v || 'Condominio es requerido',
+    //   ],
     }
   },
   methods: {
@@ -90,6 +99,7 @@ export default {
       updateOrCreate: 'updateOrCreatePagos',
       setOverlay: 'setOverlay',
       getCondominios: 'getCondominios',
+      getPagos: 'getPagos'
     }),
     validate () {
       this.$refs.form.validate()
@@ -100,18 +110,29 @@ export default {
       this.name = ''
       this.$emit('close')
     },
+    GetPagoId: function(idTicket) {
+        let response = 0;
+        this.pagos.forEach( (c) =>{
+          if(c.support_id == idTicket){
+            response = c.id;
+          }
+        });
+        return response;
+      },
     async updateOrCreatePago() {
       this.validate()
       this.setOverlay(true)
       var pago = new FormData();
-      var status = 'activo'
+      var status = 'pendiente'
       pago.append("reference", this.file);
       pago.append("amount", this.amount);
-      pago.append("condominio_id", this.condominio_id);
-      pago.append("status", status);
-      const id = this.data != null ? this.data.id : ''
+      pago.append("user_id", this.user.id);
+      pago.append("support_id", this.data.id);
+      pago.append("fecha_pago", this.fecha_pago);
+      pago.append("status", "activo");
+      let id = this.GetPagoId(this.data.id)
       try {
-        const resp = await this.updateOrCreate({ pago,  id })
+        const resp = await this.updateOrCreate({pago, id})
         this.$swal({
             icon: 'success',
             title: '¡Exito!',
@@ -139,6 +160,7 @@ export default {
       this.setOverlay(true)
       try {
       await this.getCondominios()
+      await this.getPagos()
       this.setOverlay(false)
       } catch (error) {
         console.log(error)

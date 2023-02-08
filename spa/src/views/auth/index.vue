@@ -82,7 +82,7 @@ export default {
       this.setOverlay(true)
       try {
         await this.$store.dispatch('login', this.form)
-        this.$router.push({ name: 'home' })
+        this.$router.push({ name: 'Tickets' })
         this.setOverlay(false)
       } catch (error) {
         this.setOverlay(false)

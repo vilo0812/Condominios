@@ -7,27 +7,43 @@
               Condominio
             </th> -->
             <th class="text-left">
+              Cliente
+            </th>
+            <th class="text-left">
               Cantidad
             </th>
             <th class="text-left">
               Estado
             </th>
+            <th class="text-left">
+              Titulo
+            </th>
+            <th class="text-left">
+              Categoria
+            </th>
+            <th class="text-left">
+              Fecha de pago
+            </th>
             <th class="text-rigth">
               Ver pago
             </th>
             <th class="text-rigth">
-              estatus
+              Aprobados
             </th>
           </tr>
         </thead>
         <tbody>
           <tr
-            v-for="item in pagos"
+            v-for="item in pagados"
             :key="item.id"
           >
+            <td>{{ getUser(item.user_id) }}</td>
             <!-- <td>{{ getCondominio(item.condominio_id) }}</td> -->
             <td>{{ item.amount }}</td>
             <td>{{ item.status }}</td>
+            <td>{{ getIssue(item.support_id) }}</td>
+            <td>{{ getCategory(item.support_id) }}</td>
+            <td>{{ item.fecha_pago }}</td>
             <td class="text-left">
                 <v-btn
                   depressed
@@ -57,14 +73,23 @@
                 </v-chip>
                 </template>
                 <template v-if="item.status == 'activo'">
-                  <v-chip
-                  class="ma-2"
-                  color="warning"
-                  text-color="white"
+                  <v-btn
+                  depressed
+                  color="info" 
+                  @click="Generate(item.id)"
                 >
-                  pago en revision
-                </v-chip>
+                  aprobar
+                </v-btn>
                 </template>
+            </td>
+            <td class="text-left">
+              <v-btn
+                  depressed
+                  color="error"
+                @click="Rechazo(item.id)"
+                >
+                  Rechazar Pago
+                </v-btn>
             </td>
           </tr>
         </tbody>
@@ -78,21 +103,73 @@
   export default {
     name: 'Simpletable',
     data: () => ({
+      categorias : [
+        {id: 1,name:"Regular"},
+        {id: 2,name:"Evento"},
+        {id: 3,name:"Irregular"},
+        {id: 4,name:"Anuncio"}
+      ],
     }),
     computed: {
       ...mapGetters({
-        pagos: 'pagos',
+        pagados: 'pagados',
         condominios: 'condominios',
+        users: 'users',
+        tickets: 'tickets'
       })
     },
     methods:{
       ...mapActions({
-        getPagos: 'getPagos',
+        getPagados: 'getPagados',
+        getTicketsAdmin : 'getTicketsAdmin',
         getCondominios: 'getCondominios',
+        GenerateFacture: 'GenerateFacture',
         setOverlay: 'setOverlay',
-        RechazarPago: 'RechazarPago',
-        GenerateFacture: 'GenerateFacture'
+        RechazarPago: 'RechazarPago'
       }),
+      getIssue: function(ticket_id) {
+        let TicketTake;
+        this.tickets.forEach( (t) =>{
+          if(t.id == ticket_id){
+            TicketTake = t.issue
+          }
+        });
+        return TicketTake;
+      },
+      getCategory: function(ticket_id) {
+        let TicketTake;
+        this.tickets.forEach( (t) =>{
+          if(t.id == ticket_id){
+            TicketTake = t.categorie_id
+          }
+        });
+        let CategorieTake;
+        this.categorias.forEach( (c) =>{
+          if(c.id == TicketTake){
+            CategorieTake = c.name;
+          }
+        });
+        return CategorieTake;
+      },
+      getFecha: function(ticket_id) {
+        let TicketTake;
+        this.tickets.forEach( (t) =>{
+          if(t.id == ticket_id){
+            TicketTake = t.created_at
+          }
+        });
+        var date = new Date(TicketTake);
+        return date.toLocaleString();
+      },
+      editing: function(pago) {
+        this.$emit("editing",pago);
+      },
+      deleting: function(pago) {
+        this.$emit("deleting",pago);
+      },
+      seeing: function(pago) {
+        this.$emit("seeing",pago);
+      },
       async Rechazo(pago_id){
       this.setOverlay(true)
       let data = {
@@ -141,14 +218,14 @@
           this.setOverlay(false)
       }
       },
-      editing: function(pago) {
-        this.$emit("editing",pago);
-      },
-      deleting: function(pago) {
-        this.$emit("deleting",pago);
-      },
-      seeing: function(pago) {
-        this.$emit("seeing",pago);
+      getUser(id){
+        let UserTake;
+        this.users.forEach( (c) =>{
+          if(c.id == id){
+            UserTake = c.name;
+          }
+        });
+        return UserTake;
       },
       getCondominio(id){
         let Condominio;
@@ -163,10 +240,19 @@
     async created() {
       this.setOverlay(true)
       try {
-        await this.getPagos()
-        if(this.condominios.length <= 0){
-          await this.getCondominios()
+        if(this.users.length <= 0){
+          await this.getUsers()
         }
+        if(this.tickets.length <= 0){
+          await this.getTicketsAdmin()
+        }
+        let data = {
+          id : this.$route.params.id
+        }
+        await this.getPagados(data)
+        // if(this.condominios.length <= 0){
+        //   await this.getCondominios()
+        // }
       this.setOverlay(false)
       } catch (error) {
         console.log(error)

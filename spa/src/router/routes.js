@@ -57,6 +57,30 @@ export default [
       auth: true
     }
   },
+  {
+    path: '/MisPagos',
+    name: 'MisPagos',
+    components: { default: page('pagos/MisPagos.vue'), header: comp('core/appbar') },
+    meta: {
+      auth: true
+    }
+  },
+  {
+    path: '/Pagados/:id',
+    name: 'Pagados',
+    components: { default: page('Pagados'), header: comp('core/appbar') },
+    meta: {
+      auth: true
+    }
+  },
+  {
+    path: '/TicketDetails/:id',
+    name: 'TicketDetails',
+    components: { default: page('tickets/Details.vue'), header: comp('core/appbar') },
+    meta: {
+      auth: true
+    }
+  },
   /*tickets*/
   {
     path: '/Tickets',

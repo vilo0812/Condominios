@@ -8,22 +8,28 @@
         cols="12"
         sm="9"
         >
-          <v-card 
+          <v-card
             class="elevation-2"
             color="deep-purple accent-4"
           >
             <v-card-title>
-              Pagos
-              <v-spacer />
-              <!-- <v-btn
-                color="primary"
-                large
-              @click="changeModalState(true, 'Crear')"
-              >
-                Agregar Pago
-              </v-btn> -->
+              Pagos Realizados
             </v-card-title>
-            <Simpletable  @editing="editing" @deleting="deleting" @seeing="seeing"/>
+            <a
+                style="text-decoration: none;color:white;background: rgb(33, 150, 210);border-radius: 10px;padding: 10px;margin: 5px;"
+                class="Button"
+                :href="getHref(user.id,'activo')"
+              >
+                <span class="v-btn content"> Pagos Pendientes </span>
+            </a>
+            <a
+                style="text-decoration: none;color:white;background: rgb(33, 150, 210);border-radius: 5px;padding: 10px; margin: 5px;"
+                class="Button"
+                :href="getHref(user.id,'aprobado')"
+              >
+                <span class="v-btn content"> Pagos Aprobados </span>
+            </a>
+            <Simpletable style=" margin-top: 10px;" @editing="editing" @deleting="deleting" @seeing="seeing"/>
           </v-card>
         </v-col>
       </v-row>
@@ -35,18 +41,25 @@
       <ImageModal :data="pago" module-name="Pago"/>
     </div>
   </template>
+  
   <script>
-    import Simpletable from '@/components/pagos/Simpletable.vue'
+    import Simpletable from '@/components/pagos/SimpletableMisPagos.vue'
     import UpdateOrCreate from '@/components/pagos/UpdateOrCreate.vue'
     import DeleteModal from '@/components/base/modals/DeleteModal.vue'
     import ImageModal from '@/components/base/modals/ImageModal.vue'
+    import { mapGetters } from 'vuex'
     export default {
-      name: 'Pago',
+      name: 'MisPagos',
       data () {
         return {
           action : '',
           pago: null
         }
+      },
+      computed: {
+        ...mapGetters({
+          user: 'user'
+        })
       },
       components: {
         Simpletable,
@@ -60,6 +73,17 @@
           this.action = action
           this.$store.commit('CHANGE_MODAL_STATE', state)
         },
+        getHref(user_id,estatus){
+          let url = null;
+          if (process.env.NODE_ENV === 'production' && process.env.VUE_APP_API_URL) {
+            url = `${process.env.VUE_APP_API_URL}`
+          } else {
+            url = `${process.env.VUE_APP_BASE_URL}`
+          }
+          return `${url}/api/excel/pago?status=${estatus}&user_id=${user_id}`
+
+        },
+        
         editing(pago){
           this.changeModalState(true, 'Editar')
           this.pago = pago

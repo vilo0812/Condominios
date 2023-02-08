@@ -13,7 +13,7 @@
             color="deep-purple accent-4"
           >
             <v-card-title>
-              Pagos
+              Usuarios que pagaron el anuncio
               <v-spacer />
               <!-- <v-btn
                 color="primary"
@@ -35,13 +35,14 @@
       <ImageModal :data="pago" module-name="Pago"/>
     </div>
   </template>
+  
   <script>
-    import Simpletable from '@/components/pagos/Simpletable.vue'
+    import Simpletable from '@/components/pagados/Simpletable.vue'
     import UpdateOrCreate from '@/components/pagos/UpdateOrCreate.vue'
     import DeleteModal from '@/components/base/modals/DeleteModal.vue'
     import ImageModal from '@/components/base/modals/ImageModal.vue'
     export default {
-      name: 'Pago',
+      name: 'Pagados',
       data () {
         return {
           action : '',

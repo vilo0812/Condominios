@@ -18,6 +18,13 @@
               required
               :value="getName"
             ></v-text-field>
+            <v-text-field
+              v-model="amount"
+              :counter="30"
+              label="Monto"
+              required
+              :value="getAmount"
+            ></v-text-field>
             <!-- <v-select
               :items="users"
               label="Usuario"
@@ -52,6 +59,29 @@
               :value="getCategoria"
               v-model="categories"
             ></v-select>
+            <v-select
+              :items="priorities"
+              label="Prioridades"
+              item-text="name"
+              item-value="id"
+              :rules="priorityRules"
+              :value="getPriority"
+              v-model="priority"
+            ></v-select>
+            <v-text-field
+              v-model="expiration"
+              :counter="30"
+              :rules="expirationRules"
+              label="Fecha de expiración"
+              required
+              :value="getExpiration"
+              type="datetime-local"
+            ></v-text-field>
+            <v-file-input
+              accept="image/png, image/jpeg"
+              label="Cargar Imagen a Cartelera"
+              v-model="file"
+            ></v-file-input>
           </v-form>
         </template>
   
@@ -76,7 +106,7 @@ export default {
         return this.action == 'Crear' ? true : false
       },
       getName() {
-        return this.name = this.data != null ? this.data.name : ''
+        return this.name = this.data != null ? this.data.issue : ''
       },
       getEmail() {
         return this.email = this.data != null ? this.data.email : ''
@@ -85,14 +115,23 @@ export default {
         return this.user_id = this.data != null ? this.data.user_id  : ''
       },
       getCategoria() {
-        return this.categories = this.data != null ? this.data.categories  : ''
+        return this.categories = this.data != null ? this.data.categorie_id  : ''
       },
       getIssue() {
         return this.issue = this.data != null ? this.data.issue  : ''
       },
       getPriority() {
         return this.priority = this.data != null ? this.data.priority  : ''
-      }
+      },
+      getExpiration(){
+        return this.expiration = this.data != null ? `${this.data.expiration}T00:00`  : ''
+      },
+      getAmount(){
+        return this.amount = this.data != null ? this.data.amount  : ''
+      },
+      getTicket_id() {
+        return this.ticket_id = this.data != null ? this.data.id : ''
+      },
   },
 	components: {
       Modal
@@ -106,13 +145,19 @@ export default {
       priority : '',
       issue : '',
       ticket_id : '',
+      file: null,
+      amount: '',
+      expiration: null,
+      status : 0,
       categorias : [
-        {id: 1,name:"Servicio de Gas"},
-        {id: 2,name:"Servicio de Electricidad"},
-        {id: 3,name:"Servicio de Seguridad"},
-        {id: 4,name:"Evento"},
-        {id: 5,name:"Donacion"},
-        {id: 6,name:"Servicio de Agua"}
+        {id: 1,name:"Regular"},
+        {id: 2,name:"Evento"},
+        {id: 3,name:"Irregular"},
+        {id: 4,name:"Anuncio"}
+      ],
+      priorities : [
+        {id: 0,name:"Alta"},
+        {id: 1,name:"Baja"}
       ],
       nameRules: [
         v => !!v || 'Nombre es requerido',
@@ -136,7 +181,13 @@ export default {
         v => !!v || 'tema es requerido',
       ],
       priorityRules: [
-        v => !!v || 'prioridad es requerido',
+        v => v == '' || 'prioridad es requerido',
+      ],
+      expirationRules:[
+      v => !!v || 'Fecha de expiración es requerido',
+      ],
+      amountRules:[
+      v => !!v || 'Monto es requerido',
       ],
     }
   },
@@ -163,16 +214,22 @@ export default {
       this.setOverlay(true)
       const id = this.data != null ? this.data.id : ''
       let userId = String.valueOf(this.user_id)
-      const ticket = {
-        user_id : this.user.id,
-        name : this.name,
-        email : this.user.email,
-        categories : this.categories,
-        priority : 1,
-        issue : this.name,
-        ticket_id : id,
-        status : "0"
+      var ticket = new FormData();
+      ticket.append("user_id", this.user.id);
+      ticket.append("name", this.name);
+      if(id == null){
+        ticket.append("email", this.email);
       }
+      ticket.append("categorie_id", this.categories);
+      ticket.append("priority", this.priority);
+      ticket.append("issue", this.name);
+      if(id != null){
+        ticket.append("ticket_id", id);
+      }
+      ticket.append("status", this.status);
+      ticket.append("expiration", this.expiration);
+      ticket.append("amount", this.amount);
+      ticket.append("file", this.file);
       try {
         if(this.isAdmin){
           const resp = await this.updateOrCreateTicketsAdmin({ ticket,  id })

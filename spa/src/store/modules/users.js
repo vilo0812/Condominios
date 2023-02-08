@@ -18,6 +18,8 @@ export default {
       let index = state.users.findIndex((o) => o.id === id)
       state.users[index].name = name
       state.users[index].email = email
+      state.users[index].phone = phone
+      state.users[index].direction = direction
       state.users[index].password = password
     },
     SPLICE_USER_DELETED(state, id) {
@@ -33,8 +35,11 @@ export default {
       const resp = (
         await axios.get(`/api/users?page=1&rol=2&perPage=100&order=desc`)
       ).data
+      const respAdmin = (
+        await axios.get(`/api/users?page=1&rol=1&perPage=100&order=desc`)
+      ).data
+      resp.users.push(respAdmin.users[0]);
       commit('SET_USERS', resp)
-      return resp
     },
     async updateOrCreateUsers({ commit }, { user, id }) {
       if (!id) {

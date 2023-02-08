@@ -27,6 +27,22 @@
               :value="getEmail"
             ></v-text-field>
             <v-text-field
+              v-model="phone"
+              :counter="60"
+              :rules="phoneRules"
+              label="Telefono"
+              required
+              :value="getPhone"
+            ></v-text-field>
+            <v-text-field
+              v-model="direction"
+              :counter="60"
+              :rules="directionRules"
+              label="Direccion"
+              required
+              :value="getDirection"
+            ></v-text-field>
+            <v-text-field
               v-if="changePassword"
               v-model="password"
               :counter="30"
@@ -60,6 +76,12 @@ export default {
       },
       getEmail() {
         return this.email = this.data != null ? this.data.email : ''
+      },
+      getPhone(){
+        return this.phone = this.data != null ? this.data.phone : ''
+      },
+      getDirection(){
+        return this.direction = this.data != null ? this.data.direction : ''
       }
   },
 	components: {
@@ -71,6 +93,8 @@ export default {
       password: '',
       email: '',
       name:'',
+      phone:'',
+      direction:'',
       nameRules: [
         v => !!v || 'Nombre es requerido',
         v => (v && v.length <= 30) || 'deben ser menos de 30 caracteres',
@@ -82,6 +106,14 @@ export default {
       passwordRules: [
         v => !!v || 'Correo es requerido',
         v => (v && v.length <= 30) || 'deben ser menos de 30 caracteres',
+      ],
+      phoneRules:[
+        v => !!v || 'Telefono es requerido',
+        v => (v && v.length <= 30) || 'deben ser menos de 30 caracteres',
+      ]
+      ,directionRules:[
+        v => !!v || 'Dirección es requerido',
+        v => (v && v.length <= 50) || 'deben ser menos de 50 caracteres',
       ]
     }
   },
@@ -106,6 +138,8 @@ export default {
         name : this.name,
         password : this.password,
         email : this.email,
+        direction : this.direction,
+        phone : this.phone,
         rol : ''
       }
       const id = this.data != null ? this.data.id : ''

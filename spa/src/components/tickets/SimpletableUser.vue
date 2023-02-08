@@ -81,7 +81,7 @@
           </template>
         <template v-else>
           <td class="text-left" >
-            <template v-if="pagado(item.id)">
+            <template v-if="pagado()">
                   <!-- <v-btn
                   depressed
                   color="success"
@@ -155,10 +155,10 @@
         getTicketsUser: 'getTicketsUser',
         setOverlay: 'setOverlay'
       }),
-      pagado: function(idTicket) {
+      pagado: function() {
         let response = false;
         this.pagos.forEach( (c) =>{
-          if(c.support_id == idTicket){
+          if(c.user_id ==  this.user.id){
             response = true;
           }
         });
