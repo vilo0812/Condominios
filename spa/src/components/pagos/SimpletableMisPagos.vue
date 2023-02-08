@@ -12,6 +12,9 @@
             <th class="text-left">
               Estado
             </th>
+            <th class="text-left">
+              Tema
+            </th>
             <th class="text-rigth">
               Ver pago
             </th>
@@ -28,6 +31,7 @@
             <!-- <td>{{ getCondominio(item.condominio_id) }}</td> -->
             <td>{{ item.amount }}</td>
             <td>{{ item.status }}</td>
+            <td>{{ getIssue(item.support_id) }}</td>
             <td class="text-left">
                 <v-btn
                   depressed
@@ -84,6 +88,7 @@
         condominios: 'condominios',
         user: 'user',
         facturas: 'facturas',
+        tickets: 'tickets'
       })
     },
     methods:{
@@ -91,8 +96,18 @@
         getMisPagos: 'getMisPagos',
         getCondominios: 'getCondominios',
         setOverlay: 'setOverlay',
-        getFacturas: 'getFacturas'
+        getFacturas: 'getFacturas',
+        getTicketsAdmin: 'getTicketsAdmin'
       }),
+      getIssue(support_id){
+        let IssueTake;
+        this.tickets.forEach( (t) =>{
+          if(t.id == support_id){
+            IssueTake = t.issue
+          }
+        });
+        return IssueTake;
+      },
       getReference(pago_id){
         let FacturaTake;
         this.facturas.forEach( (f) =>{
@@ -134,6 +149,7 @@
       this.setOverlay(true)
       try {
         await this.getMisPagos(this.user.id)
+        await this.getTicketsAdmin()
         if(this.facturas.length <= 0){
           await this.getFacturas()
         }
