@@ -15,12 +15,6 @@
             <th class="text-left">
               Monto
             </th>
-            <!-- <th class="text-left">
-              Prioridad
-            </th> -->
-            <!-- <th class="text-left">
-              Tema
-            </th> -->
             <template v-if="isAdmin">
               <th class="text-rigth">
               Pagados
@@ -81,7 +75,7 @@
           </template>
         <template v-else>
           <td class="text-left" >
-            <template v-if="pagado()">
+            <template v-if="pagado(item.id)">
                   <!-- <v-btn
                   depressed
                   color="success"
@@ -155,10 +149,10 @@
         getTicketsUser: 'getTicketsUser',
         setOverlay: 'setOverlay'
       }),
-      pagado: function() {
+      pagado: function(ticket_id) {
         let response = false;
-        this.pagos.forEach( (c) =>{
-          if(c.user_id ==  this.user.id){
+        this.pagos.forEach( (p) =>{
+          if(p.user_id ==  this.user.id && p.support_id == ticket_id){
             response = true;
           }
         });

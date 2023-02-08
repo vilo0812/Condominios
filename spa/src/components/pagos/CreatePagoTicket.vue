@@ -110,11 +110,11 @@ export default {
       this.name = ''
       this.$emit('close')
     },
-    GetPagoId: function(idTicket) {
+    GetPagoId: function() {
         let response = 0;
-        this.pagos.forEach( (c) =>{
-          if(c.support_id == idTicket){
-            response = c.id;
+        this.pagos.forEach( (p) =>{
+          if(p.user_id ==  this.user.id){
+            response = p.id;
           }
         });
         return response;
@@ -130,7 +130,7 @@ export default {
       pago.append("support_id", this.data.id);
       pago.append("fecha_pago", this.fecha_pago);
       pago.append("status", "activo");
-      let id = this.GetPagoId(this.data.id)
+      let id = this.GetPagoId()
       try {
         const resp = await this.updateOrCreate({pago, id})
         this.$swal({

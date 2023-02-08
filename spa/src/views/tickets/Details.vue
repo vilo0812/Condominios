@@ -12,7 +12,7 @@
             class="elevation-2"
             color="deep-purple accent-4"
           >
-          <template v-if="rechazado(ticket.id)">
+          <template v-if="rechazado()">
                   <v-chip
                   class="ma-2"
                   color="red"
@@ -25,7 +25,7 @@
               Cartelera Informativa
               <v-spacer />
               
-              <template v-if="pagado(ticket.id)">
+              <template v-if="pagado()">
               </template>
               <template v-else>
                 <v-btn
@@ -205,19 +205,19 @@
         });
         return PrioriyTake;
       },
-      rechazado: function(idTicket) {
+      rechazado: function() {
         let response = false;
-        this.pagos.forEach( (c) =>{
-          if(c.support_id == idTicket && c.status == 'rechazado'){
+        this.pagos.forEach( (p) =>{
+          if(p.user_id ==  this.user.id && p.status == 'rechazado'){
             response = true;
           }
         });
         return response;
       },
-        pagado: function(idTicket) {
+        pagado: function() {
         let response = false;
-        this.pagos.forEach( (c) =>{
-          if(c.user_id ==  this.user.id && c.status != 'rechazado'){
+        this.pagos.forEach( (p) =>{
+          if(p.user_id ==  this.user.id && p.status != 'rechazado'){
             response = true;
           }
           else{
