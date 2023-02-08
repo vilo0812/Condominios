@@ -139,7 +139,8 @@
           isAdmin: 'isAdmin',
           tickets: 'tickets',
           pagos: 'pagos',
-          users: 'users'
+          users: 'users',
+          user: 'user'
         }),
         getUrl() {
           console.log(this.ticket.file)
@@ -216,7 +217,7 @@
         pagado: function(idTicket) {
         let response = false;
         this.pagos.forEach( (c) =>{
-          if(c.support_id == idTicket && c.status != 'rechazado'){
+          if(c.user_id ==  this.user.id && c.status != 'rechazado'){
             response = true;
           }
           else{
