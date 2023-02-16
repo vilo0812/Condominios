@@ -1,7 +1,7 @@
 <template>
 	<Modal>
         <template slot="header">
-          <h4>{{action}} Pago</h4>
+          <h4>{{action}} Pago </h4>
         </template>
 
         <template slot="body">
@@ -110,13 +110,19 @@ export default {
       this.name = ''
       this.$emit('close')
     },
-    GetPagoId: function() {
-        let response = 0;
+    GetPagoId: function(ticket_id) {
+      let response = 0;
+        let pago = null;
         this.pagos.forEach( (p) =>{
-          if(p.user_id ==  this.user.id){
-            response = p.id;
+          if(p.user_id ==  this.user.id
+          && p.support_id == ticket_id
+          ){
+            pago = p;
           }
         });
+        if(pago != null){
+          response = pago.id
+        }
         return response;
       },
     async updateOrCreatePago() {
@@ -130,7 +136,8 @@ export default {
       pago.append("support_id", this.data.id);
       pago.append("fecha_pago", this.fecha_pago);
       pago.append("status", "activo");
-      let id = this.GetPagoId()
+      let id = this.GetPagoId(this.data.id)
+      console.log(id)
       try {
         const resp = await this.updateOrCreate({pago, id})
         this.$swal({

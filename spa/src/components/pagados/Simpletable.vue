@@ -125,7 +125,8 @@
         getCondominios: 'getCondominios',
         GenerateFacture: 'GenerateFacture',
         setOverlay: 'setOverlay',
-        RechazarPago: 'RechazarPago'
+        RechazarPago: 'RechazarPago',
+        getUsers: 'getUsers'
       }),
       getIssue: function(ticket_id) {
         let TicketTake;
@@ -240,12 +241,8 @@
     async created() {
       this.setOverlay(true)
       try {
-        if(this.users.length <= 0){
-          await this.getUsers()
-        }
-        if(this.tickets.length <= 0){
-          await this.getTicketsAdmin()
-        }
+        await this.getUsers()
+        await this.getTicketsAdmin()
         let data = {
           id : this.$route.params.id
         }

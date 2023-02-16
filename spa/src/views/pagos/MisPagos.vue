@@ -34,7 +34,7 @@
         </v-col>
       </v-row>
       <!--   Modal Update Or Create Pago -->
-      <UpdateOrCreate :action="action" :data="pago" @close="close"/>
+      <UpdateOrCreate action="Pagar" :data="ticket" @close="closeCreatePagoTicket"/>
       <!--   Modal Delete Pago -->
       <DeleteModal :data="pago" module-name="Pago" action-delete-name="deletePago"/>
       <!--   Modal Image Pago -->
@@ -44,7 +44,7 @@
   
   <script>
     import Simpletable from '@/components/pagos/SimpletableMisPagos.vue'
-    import UpdateOrCreate from '@/components/pagos/UpdateOrCreate.vue'
+    import UpdateOrCreate from '@/components/pagos/CreatePagoTicket.vue'
     import DeleteModal from '@/components/base/modals/DeleteModal.vue'
     import ImageModal from '@/components/base/modals/ImageModal.vue'
     import { mapGetters } from 'vuex'
@@ -53,7 +53,7 @@
       data () {
         return {
           action : '',
-          pago: null
+          ticket: null
         }
       },
       computed: {
@@ -84,9 +84,9 @@
 
         },
         
-        editing(pago){
-          this.changeModalState(true, 'Editar')
-          this.pago = pago
+        editing(ticket){
+          this.ticket = ticket
+          this.$store.commit('CHANGE_MODAL_CREATE_PAGO_TICKET_STATE', true)
         },
         deleting(pago){
           this.pago = pago
@@ -98,9 +98,12 @@
           this.$store.commit('CHANGE_MODAL_IMAGE_STATE', true)
         },
         close(){
-          this.user = null
+          this.ticket = null
           this.action = null
           this.$store.commit('CHANGE_MODAL_STATE', false)
+        },
+        closeCreatePagoTicket(){
+          this.$store.commit('CHANGE_MODAL_CREATE_PAGO_TICKET_STATE', false)
         },
       }
     }

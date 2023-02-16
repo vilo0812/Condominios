@@ -14,7 +14,7 @@ export default {
       console.log(user)
       state.users.push(user)
     },
-    UPDATE_USER(state, { id, name, email, password }) {
+    UPDATE_USER(state, { id, name, email, password,phone,direction }) {
       let index = state.users.findIndex((o) => o.id === id)
       state.users[index].name = name
       state.users[index].email = email
@@ -42,6 +42,7 @@ export default {
       commit('SET_USERS', resp)
     },
     async updateOrCreateUsers({ commit }, { user, id }) {
+      console.log(user)
       if (!id) {
         user.rol = 2;
         const resp = (await axios.post('/api/users',user)).data

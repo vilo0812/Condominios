@@ -19,6 +19,9 @@
               Ver pago
             </th>
             <th class="text-rigth">
+              Actualizar Pago
+            </th>
+            <th class="text-rigth">
               Ver factura
             </th>
           </tr>
@@ -39,6 +42,16 @@
                   @click="seeing(item)"
                 >
                   ver
+                </v-btn>
+            </td>
+            <td class="text-left">
+                <v-btn
+                  depressed
+                  color="warning" 
+                  @click="editing(item)"
+                  v-if="item.status == 'rechazado'"
+                >
+                  Actualizar
                 </v-btn>
             </td>
             <td class="text-left">
@@ -108,6 +121,15 @@
         });
         return IssueTake;
       },
+      getTicket(support_id){
+        let ticketTake;
+        this.tickets.forEach( (t) =>{
+          if(t.id == support_id){
+            ticketTake = t
+          }
+        });
+        return ticketTake;
+      },
       getReference(pago_id){
         let FacturaTake;
         this.facturas.forEach( (f) =>{
@@ -127,7 +149,8 @@
       //   return url
       // },
       editing: function(pago) {
-        this.$emit("editing",pago);
+        let ticket = this.getTicket(pago.support_id)
+        this.$emit("editing",ticket);
       },
       deleting: function(pago) {
         this.$emit("deleting",pago);
@@ -135,6 +158,9 @@
       seeing: function(pago) {
         this.$emit("seeing",pago);
       },
+      openCreatePagoTicket(){
+          this.$store.commit('CHANGE_MODAL_CREATE_PAGO_TICKET_STATE', true)
+        },
       getCondominio(id){
         let Condominio;
         this.condominios.forEach( (c) =>{

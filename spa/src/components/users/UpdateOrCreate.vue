@@ -32,6 +32,7 @@
               :rules="phoneRules"
               label="Telefono"
               required
+              type="number"
               :value="getPhone"
             ></v-text-field>
             <v-text-field
@@ -43,7 +44,6 @@
               :value="getDirection"
             ></v-text-field>
             <v-text-field
-              v-if="changePassword"
               v-model="password"
               :counter="30"
               :rules="passwordRules"
@@ -68,9 +68,9 @@ export default {
     ...mapGetters({
         users:'users'
       }),
-      changePassword() {
-        return this.action == 'Crear' ? true : false
-      },
+      // changePassword() {
+      //   return this.action == 'Crear' ? true : false
+      // },
       getName() {
         return this.name = this.data != null ? this.data.name : ''
       },

@@ -21,6 +21,7 @@ export default {
     SET_RECHAZADO(state, data){
       let index = state.pagados.findIndex((o) => o.id === data.pago_id)
       state.pagados[index].status = "rechazado"
+      state.pagados.splice(index, 1)
     },
     SET_FACTURA(state, data){
       let index = state.pagados.findIndex((o) => o.id === data.pago_id)
@@ -32,11 +33,10 @@ export default {
     async SET_NEW_PAGO(state, pago) {
       state.pagos.push(pago)
     },
-    UPDATE_PAGO(state, { id, name, email, password }) {
-      let index = state.users.findIndex((o) => o.id === id)
-      state.pagos[index].name = name
-      state.pagos[index].email = email
-      state.pagos[index].password = password
+    UPDATE_PAGO(state, { id, amount, status }) {
+      let index = state.misPagos.findIndex((o) => o.id === id)
+      state.misPagos[index].amount = amount
+      state.misPagos[index].status = status
     },
     SPLICE_PAGO_DELETED(state, id) {
       let index = state.pagos.findIndex((o) => o.id === id)
@@ -79,6 +79,7 @@ export default {
     async RechazarPago({ commit }, { data }) {
         const resp = (await axios.post('/api/pago/status_pago/generateFacura',data)).data
         commit('SET_RECHAZADO', data)
+        commit('SPLICE_PAGO_DELETED', data.pago_id)
         return resp
     },
     async getPagados({ commit },{id}) {
@@ -96,7 +97,7 @@ export default {
       return resp.pagos
     },
     async updateOrCreatePagos({ commit }, {pago, id} ) {
-      console.log("llegamos a pagos")
+      console.log(id)
       if (!id) {
         const response = axios({
           method: 'post',

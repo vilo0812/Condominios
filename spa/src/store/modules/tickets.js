@@ -54,6 +54,8 @@ export default {
         return resp
     },
     async updateOrCreateTicketsAdmin({ commit }, { ticket, id }) {
+      console.log("id")
+      console.log(id)
       if (!id) {
         // const resp = (await axios.post('api/ticket-store',ticket)).data
         // commit('SET_NEW_TICKET', resp.data)

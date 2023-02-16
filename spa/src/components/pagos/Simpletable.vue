@@ -7,6 +7,12 @@
               Condominio
             </th> -->
             <th class="text-left">
+              Usuario
+            </th>
+            <th class="text-left">
+              Tema
+            </th>
+            <th class="text-left">
               Cantidad
             </th>
             <th class="text-left">
@@ -26,6 +32,8 @@
             :key="item.id"
           >
             <!-- <td>{{ getCondominio(item.condominio_id) }}</td> -->
+            <td>{{ getUser(item.user_id) }}</td>
+            <td>{{ getIssue(item.support_id) }}</td>
             <td>{{ item.amount }}</td>
             <td>{{ item.status }}</td>
             <td class="text-left">
@@ -83,6 +91,8 @@
       ...mapGetters({
         pagos: 'pagos',
         condominios: 'condominios',
+        users: 'users',
+        tickets: 'tickets'
       })
     },
     methods:{
@@ -91,8 +101,28 @@
         getCondominios: 'getCondominios',
         setOverlay: 'setOverlay',
         RechazarPago: 'RechazarPago',
-        GenerateFacture: 'GenerateFacture'
+        GenerateFacture: 'GenerateFacture',
+        getTicketsAdmin : 'getTicketsAdmin',
+        getUsers: 'getUsers'
       }),
+      getIssue: function(ticket_id) {
+        let TicketTake;
+        this.tickets.forEach( (t) =>{
+          if(t.id == ticket_id){
+            TicketTake = t.issue
+          }
+        });
+        return TicketTake;
+      },
+      getUser(id){
+        let UserTake;
+        this.users.forEach( (c) =>{
+          if(c.id == id){
+            UserTake = c.name;
+          }
+        });
+        return UserTake;
+      },
       async Rechazo(pago_id){
       this.setOverlay(true)
       let data = {
@@ -163,6 +193,8 @@
     async created() {
       this.setOverlay(true)
       try {
+        await this.getUsers()
+        await this.getTicketsAdmin()
         await this.getPagos()
         if(this.condominios.length <= 0){
           await this.getCondominios()

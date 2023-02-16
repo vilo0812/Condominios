@@ -12,7 +12,7 @@
             class="elevation-2"
             color="deep-purple accent-4"
           >
-          <template v-if="rechazado()">
+          <template v-if="rechazado(ticket.id)">
                   <v-chip
                   class="ma-2"
                   color="red"
@@ -25,9 +25,7 @@
               Cartelera Informativa
               <v-spacer />
               
-              <template v-if="pagado()">
-              </template>
-              <template v-else>
+              <template v-if="pagado(ticket.id)">
                 <v-btn
                     color="primary"
                     large
@@ -205,25 +203,40 @@
         });
         return PrioriyTake;
       },
-      rechazado: function() {
+      rechazado: function(ticket_id) {
         let response = false;
+        let pago = null;
         this.pagos.forEach( (p) =>{
-          if(p.user_id ==  this.user.id && p.status == 'rechazado'){
-            response = true;
+          if(p.user_id ==  this.user.id
+          && p.support_id == ticket_id
+          ){
+            pago = p;
           }
         });
+        if(pago != null){
+          if(pago.status == 'rechazado'){
+            response = true
+          }
+        }
         return response;
       },
-        pagado: function() {
+        pagado: function(ticket_id) {
         let response = false;
+        let pago = null;
         this.pagos.forEach( (p) =>{
-          if(p.user_id ==  this.user.id && p.status != 'rechazado'){
-            response = true;
-          }
-          else{
-            response = false;
+          if(p.user_id ==  this.user.id
+          && p.support_id == ticket_id
+          ){
+            pago = p;
           }
         });
+        if(pago != null){
+          if(pago.status == 'rechazado'){
+            response = true
+          }
+        }else{
+          response = true
+        }
         return response;
       },
         changeModalState(state, action = null) {
