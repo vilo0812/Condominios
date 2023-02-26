@@ -34,6 +34,8 @@ export default {
       state.pagos.push(pago)
     },
     UPDATE_PAGO(state, { id, amount, status }) {
+      console.log(amount)
+      console.log(status)
       let index = state.misPagos.findIndex((o) => o.id === id)
       state.misPagos[index].amount = amount
       state.misPagos[index].status = status

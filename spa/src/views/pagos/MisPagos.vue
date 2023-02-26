@@ -34,7 +34,7 @@
         </v-col>
       </v-row>
       <!--   Modal Update Or Create Pago -->
-      <UpdateOrCreate action="Pagar" :data="ticket" @close="closeCreatePagoTicket"/>
+      <UpdateOrCreate action="Actualizar" :data="pagoActual"  @close="closeCreatePagoTicket"/>
       <!--   Modal Delete Pago -->
       <DeleteModal :data="pago" module-name="Pago" action-delete-name="deletePago"/>
       <!--   Modal Image Pago -->
@@ -53,7 +53,8 @@
       data () {
         return {
           action : '',
-          ticket: null
+          pagoActual: null,
+          pago: null
         }
       },
       computed: {
@@ -81,11 +82,9 @@
             url = `${process.env.VUE_APP_BASE_URL}`
           }
           return `${url}/api/excel/pago?status=${estatus}&user_id=${user_id}`
-
         },
-        
-        editing(ticket){
-          this.ticket = ticket
+        editing(pagoActual){
+          this.pagoActual = pagoActual
           this.$store.commit('CHANGE_MODAL_CREATE_PAGO_TICKET_STATE', true)
         },
         deleting(pago){
@@ -93,7 +92,6 @@
           this.$store.commit('CHANGE_MODAL_DELETE_STATE', true)
         },
         seeing(pago){
-          console.log(pago)
           this.pago = pago
           this.$store.commit('CHANGE_MODAL_IMAGE_STATE', true)
         },

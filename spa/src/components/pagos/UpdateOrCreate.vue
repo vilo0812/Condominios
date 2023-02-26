@@ -1,7 +1,7 @@
 <template>
 	<Modal>
         <template slot="header">
-          <h4>{{action}} Pago</h4>
+          <h4>{{action}} Pago </h4>
         </template>
 
         <template slot="body">
@@ -58,6 +58,9 @@ export default {
       },
       getCondominio() {
         return this.condominio_id = this.data != null ? this.data.condominios : ''
+      },
+      getID() {
+        return this.id = this.data != null ? this.data.id : ''
       }
   },
 	components: {
@@ -65,6 +68,7 @@ export default {
     },
   data () {
     return {
+      ticket_id: 0,
       valid: true,
       amount: '',
       status: '',
@@ -109,7 +113,10 @@ export default {
       pago.append("amount", this.amount);
       pago.append("condominio_id", this.condominio_id);
       pago.append("status", status);
+      const support_id = this.data != null ? this.data.support_id : ''
+      pago.append("support_id", support_id);
       const id = this.data != null ? this.data.id : ''
+      console.log(id)
       try {
         const resp = await this.updateOrCreate({ pago,  id })
         this.$swal({
@@ -133,7 +140,8 @@ export default {
   },
   props: {
     action: '',
-    data: null
+    data: null,
+    pagoActual: null
   },
   async created() {
       this.setOverlay(true)

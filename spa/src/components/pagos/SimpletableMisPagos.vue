@@ -18,9 +18,9 @@
             <th class="text-rigth">
               Ver pago
             </th>
-            <th class="text-rigth">
+            <!-- <th class="text-rigth">
               Actualizar Pago
-            </th>
+            </th> -->
             <th class="text-rigth">
               Ver factura
             </th>
@@ -44,7 +44,7 @@
                   ver
                 </v-btn>
             </td>
-            <td class="text-left">
+            <!-- <td class="text-left">
                 <v-btn
                   depressed
                   color="warning" 
@@ -53,7 +53,7 @@
                 >
                   Actualizar
                 </v-btn>
-            </td>
+            </td> -->
             <td class="text-left">
               <template v-if="item.status == 'aprobado'">
                 <a
@@ -149,8 +149,8 @@
       //   return url
       // },
       editing: function(pago) {
-        let ticket = this.getTicket(pago.support_id)
-        this.$emit("editing",ticket);
+        //let ticket = this.getTicket(pago.support_id)
+        this.$emit("editing",pago);
       },
       deleting: function(pago) {
         this.$emit("deleting",pago);

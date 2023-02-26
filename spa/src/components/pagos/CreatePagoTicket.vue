@@ -80,6 +80,7 @@ export default {
       reference: '',
       condominio_id: '',
       name: '',
+      fecha_pago: '',
       file: null,
       amountRules: [
         v => !!v || 'Monto es requerido',

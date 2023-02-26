@@ -90,15 +90,6 @@
                   ver pago
                 </v-btn>
               </template>
-              <template v-else>
-                <!-- <v-btn
-                  depressed
-                  color="info"
-                  @click="openCreatePagoTicket(item)"
-                >
-                  Pagar
-                </v-btn> -->
-              </template>
             </td>
             <td class="text-left" >
                 <v-btn
@@ -149,11 +140,26 @@
         getTicketsUser: 'getTicketsUser',
         setOverlay: 'setOverlay'
       }),
+      rechazado: function(ticket_id) {
+        let response = false;
+        this.pagos.forEach( (p) =>{
+          if(p.user_id ==  this.user.id &&
+          p.support_id == ticket_id &&
+          p.status == 'rechazado' ){
+            response = true;
+          }
+        });
+        return response;
+      },
       pagado: function(ticket_id) {
         let response = false;
         this.pagos.forEach( (p) =>{
-          if(p.user_id ==  this.user.id && p.support_id == ticket_id){
+          if(p.user_id ==  this.user.id &&
+          p.support_id == ticket_id){
             response = true;
+          }
+          else{
+            response = false;
           }
         });
         return response;

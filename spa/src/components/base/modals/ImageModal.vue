@@ -41,7 +41,7 @@
         modalImageState: 'modalImageState'
       }),
       getUrl() {
-        return this.url = this.data.reference != null ? this.data.reference : ''
+        return this.url = this.data != null ? this.data.reference : ''
       }
     },
     name: 'ImageModal',
@@ -69,6 +69,5 @@
     }
   }
   </script>
-  
   <style lang="css" scoped>
   </style>
