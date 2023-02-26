@@ -64,7 +64,6 @@
               label="Prioridades"
               item-text="name"
               item-value="id"
-              :rules="priorityRules"
               :value="getPriority"
               v-model="priority"
             ></v-select>

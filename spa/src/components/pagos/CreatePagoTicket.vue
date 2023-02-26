@@ -56,7 +56,7 @@ export default {
   computed: {
     ...mapGetters({
       condominios:'condominios',
-      pagos: 'pagos',
+      pagoActual: 'pagoActual',
       user:'user'
       }),
       getAmount() {
@@ -100,7 +100,7 @@ export default {
       updateOrCreate: 'updateOrCreatePagos',
       setOverlay: 'setOverlay',
       getCondominios: 'getCondominios',
-      getPagos: 'getPagos'
+      getPagoUserByID: 'getPagoUserByID'
     }),
     validate () {
       this.$refs.form.validate()
@@ -111,21 +111,6 @@ export default {
       this.name = ''
       this.$emit('close')
     },
-    GetPagoId: function(ticket_id) {
-      let response = 0;
-        let pago = null;
-        this.pagos.forEach( (p) =>{
-          if(p.user_id ==  this.user.id
-          && p.support_id == ticket_id
-          ){
-            pago = p;
-          }
-        });
-        if(pago != null){
-          response = pago.id
-        }
-        return response;
-      },
     async updateOrCreatePago() {
       this.validate()
       this.setOverlay(true)
@@ -137,7 +122,7 @@ export default {
       pago.append("support_id", this.data.id);
       pago.append("fecha_pago", this.fecha_pago);
       pago.append("status", "activo");
-      let id = this.GetPagoId(this.data.id)
+      let id = this.pagoActual.id
       console.log(id)
       try {
         const resp = await this.updateOrCreate({pago, id})
@@ -168,7 +153,14 @@ export default {
       this.setOverlay(true)
       try {
       await this.getCondominios()
-      await this.getPagos()
+      let ticket_id = this.data != null ? this.data.id : ''
+      if(ticket_id){
+        let info = {
+          user_id : this.user.id,
+          ticket_id : ticket_id
+        }
+        await this.getPagoUserByID(info)
+      }
       this.setOverlay(false)
       } catch (error) {
         console.log(error)

@@ -1,6 +1,7 @@
 import axios from 'axios'
 export default {
   state: {
+    pagoActual: null,
     pagos: [],
     pagados: [],
     misPagos: [],
@@ -12,6 +13,9 @@ export default {
         state.pagos = data.pagos
         state.pagoPagitane = data.paginate
     },
+    SET_PAGO_USER (state, data) {
+      state.pagoActual = data
+  },
     SET_PAGADOS (state, data) {
       state.pagados = data
     },
@@ -35,7 +39,6 @@ export default {
     },
     UPDATE_PAGO(state, { id, amount, status }) {
       console.log(amount)
-      console.log(status)
       let index = state.misPagos.findIndex((o) => o.id === id)
       state.misPagos[index].amount = amount
       state.misPagos[index].status = status
@@ -47,6 +50,7 @@ export default {
   },
   getters: {
     pagos: state => state.pagos,
+    pagoActual: state => state.pagoActual,
     pagados: state => state.pagados,
     misPagos: state => state.misPagos,
     facturas: state => state.facturas,
@@ -71,6 +75,16 @@ export default {
         await axios.get(`/api/pago?page=1&rol=2&perPage=100&order=desc`)
       ).data
       commit('SET_PAGOS', resp)
+      return resp
+    },
+    async getPagoUserByID({ commit},{user_id, ticket_id}) {
+      const resp = (
+        await axios.get(`/api/pago/ticket/by/user?user=${user_id}&ticket=${ticket_id}`)
+      ).data
+      if(resp == "No se a encontrado pago."){
+        commit('SET_PAGO_USER', null)
+      }
+      commit('SET_PAGO_USER', resp[0])
       return resp
     },
     async GenerateFacture({ commit }, { data }) {
@@ -99,7 +113,6 @@ export default {
       return resp.pagos
     },
     async updateOrCreatePagos({ commit }, {pago, id} ) {
-      console.log(id)
       if (!id) {
         const response = axios({
           method: 'post',
@@ -109,6 +122,7 @@ export default {
           });
           response.then(resp => {
             commit('SET_NEW_PAGO', resp.data.data)
+            commit('SET_PAGO_USER', resp.data.data)
             return resp
           });
       } else {
@@ -120,7 +134,7 @@ export default {
           headers: {'Content-Type': 'multipart/form-data' }
           });
           response.then(resp => {
-            commit('UPDATE_PAGO', resp.data.data)
+            commit('SET_PAGO_USER', resp.data.data)
             return resp
           });
       }

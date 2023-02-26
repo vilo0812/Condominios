@@ -59,7 +59,6 @@ export default {
       OptionsAdmin:[
         { key : "Usuarios", route: "Users", name : "Usuarios"},
         { key : "Tickets", route: "Tickets", name : "Anuncios"},
-        { key : "Condominios", route: "Condominios", name : "Urbanización"},
         { key : "Pagos", route: "Pagos", name : "Pagos"}
       ],
       OptionsUser:[

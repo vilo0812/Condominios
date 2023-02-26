@@ -12,7 +12,7 @@
             class="elevation-2"
             color="deep-purple accent-4"
           >
-          <template v-if="rechazado(ticket.id)">
+          <template v-if="rechazado()">
                   <v-chip
                   class="ma-2"
                   color="red"
@@ -25,7 +25,7 @@
               Cartelera Informativa
               <v-spacer />
               
-              <template v-if="pagado(ticket.id)">
+              <template v-if="pagado()">
                 <v-btn
                     color="primary"
                     large
@@ -136,12 +136,11 @@
         ...mapGetters({
           isAdmin: 'isAdmin',
           tickets: 'tickets',
-          pagos: 'pagos',
+          pagoActual: 'pagoActual',
           users: 'users',
           user: 'user'
         }),
         getUrl() {
-          console.log(this.ticket.file)
         return this.ticket.file != "" ? this.ticket.file : 'https://cdn.vuetifyjs.com/images/cards/docks.jpg'
       }
       },
@@ -154,7 +153,11 @@
                 this.ticket = t
             }
         });
-        await this.getPagos()
+        let data = {
+          user_id : this.user.id,
+          ticket_id : id
+        }
+        await this.getPagoUserByID(data)
         if(this.users.length <= 0){
           await this.getUsers()
         }
@@ -173,7 +176,7 @@
         ...mapActions({
         getTicketsAdmin: 'getTicketsAdmin',
         setOverlay: 'setOverlay',
-        getPagos: 'getPagos',
+        getPagoUserByID: 'getPagoUserByID',
         getUsers: 'getUsers',
         }),
         getCategoria: function(categorie_id) {
@@ -203,41 +206,28 @@
         });
         return PrioriyTake;
       },
-      rechazado: function(ticket_id) {
-        let response = false;
-        let pago = null;
-        this.pagos.forEach( (p) =>{
-          if(p.user_id ==  this.user.id
-          && p.support_id == ticket_id
-          ){
-            pago = p;
-          }
-        });
-        if(pago != null){
-          if(pago.status == 'rechazado'){
-            response = true
-          }
-        }
-        return response;
-      },
-        pagado: function(ticket_id) {
-        let response = false;
-        let pago = null;
-        this.pagos.forEach( (p) =>{
-          if(p.user_id ==  this.user.id
-          && p.support_id == ticket_id
-          ){
-            pago = p;
-          }
-        });
-        if(pago != null){
-          if(pago.status == 'rechazado'){
-            response = true
+      rechazado: function() {
+        if(this.pagoActual != null){
+          if(this.pagoActual.status == 'rechazado'){
+            return true
+          }else{
+            return false
           }
         }else{
-          response = true
+          return false
         }
-        return response;
+      },
+        pagado: function() {
+          if(this.pagoActual != null){
+            if(this.pagoActual.status == 'rechazado'){
+            return true
+            }
+            if(this.pagoActual.status == 'activo'){
+              return false
+            }
+          }else{
+            return true
+          }
       },
         changeModalState(state, action = null) {
           this.ticket = null
@@ -259,7 +249,6 @@
         },
         seeing(pago){
           this.pago = pago
-          console.log(pago)
           this.$store.commit('CHANGE_MODAL_IMAGE_STATE', true)
         },
         openCreatePagoTicket(){
