@@ -87,6 +87,16 @@ export default {
       commit('SET_PAGO_USER', resp[0])
       return resp
     },
+    async getPagadoUserByID({ commit},{user_id, ticket_id}) {
+      const resp = (
+        await axios.get(`/api/pago/ticket/by/user?user=${user_id}&ticket=${ticket_id}`)
+      ).data
+      if(resp == "No se a encontrado pago."){
+        return null
+      }else{
+        return resp[0].status
+      }
+    },
     async GenerateFacture({ commit }, { data }) {
       const resp = (await axios.post('/api/pago/status_pago/generateFacura',data)).data
       commit('SET_FACTURA', data)

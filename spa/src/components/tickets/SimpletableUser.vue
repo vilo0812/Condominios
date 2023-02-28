@@ -75,13 +75,7 @@
           </template>
         <template v-else>
           <td class="text-left" >
-            <template v-if="pagado(item.id)">
-                  <!-- <v-btn
-                  depressed
-                  color="success"
-                >
-                  Generar Factura
-                </v-btn> -->
+            <template v-if="pagado(item)">
                 <v-btn
                   depressed
                   color="info"
@@ -89,6 +83,15 @@
                 >
                   ver pago
                 </v-btn>
+              </template>
+              <template v-if="rechazado(item)">
+                <v-chip
+                  class="ma-2"
+                  color="error"
+                  text-color="white"
+                >
+                  pago Rechazado
+                </v-chip>
               </template>
             </td>
             <td class="text-left" >
@@ -151,18 +154,25 @@
         });
         return response;
       },
-      pagado: function(ticket_id) {
-        let response = false;
-        this.pagos.forEach( (p) =>{
-          if(p.user_id ==  this.user.id &&
-          p.support_id == ticket_id){
-            response = true;
+      rechazado: function(ticket) {
+        console.log(ticket)
+        if(ticket.get_payment.length > 0){
+          if(ticket.get_payment[0].status == "rechazado"){
+            return true
           }
-          else{
-            response = false;
+        }else{
+          return false
+        }
+      },
+      pagado: function(ticket) {
+        console.log(ticket)
+        if(ticket.get_payment.length > 0){
+          if(ticket.get_payment[0].status == "activo"){
+            return true
           }
-        });
-        return response;
+        }else{
+          return false
+        }
       },
       editing: function(user) {
         this.$emit("editing",user);

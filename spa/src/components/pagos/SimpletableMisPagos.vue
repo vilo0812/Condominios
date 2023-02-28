@@ -22,7 +22,7 @@
               Actualizar Pago
             </th> -->
             <th class="text-rigth">
-              Ver factura
+              Estado
             </th>
           </tr>
         </thead>
